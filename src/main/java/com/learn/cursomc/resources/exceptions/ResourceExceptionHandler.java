@@ -1,0 +1,37 @@
+package com.learn.cursomc.resources.exceptions;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import com.learn.cursomc.services.exceptions.DataIntegrityException;
+import com.learn.cursomc.services.exceptions.ObjectNotFoundException;
+
+@ControllerAdvice
+public class ResourceExceptionHandler {
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS");
+	
+	@ExceptionHandler(ObjectNotFoundException.class)
+	public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e) {
+		StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(), getFormatDate());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+	}
+	
+	@ExceptionHandler(DataIntegrityException.class)
+	public ResponseEntity<StandardError> dataIntegrity(DataIntegrityException e) {
+		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), getFormatDate());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+	
+	private String getFormatDate() {
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(new Date());
+		return sdf.format(cal.getTime());
+	}
+}
