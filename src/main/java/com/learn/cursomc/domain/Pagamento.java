@@ -12,6 +12,7 @@ import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.learn.cursomc.domain.enums.EstadoPagamento;
+import com.learn.cursomc.utils.Util;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -33,7 +34,7 @@ public abstract class Pagamento implements Serializable {
 	public Pagamento(Integer id, EstadoPagamento estado, Pedido pedido) {
 		super();
 		this.id = id;
-		this.estado = estado.getCod();
+		this.estado = (Util.isNull(estado) ? null : estado.getCod());
 		this.pedido = pedido;
 	}
 	
