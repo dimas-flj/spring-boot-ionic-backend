@@ -1,9 +1,6 @@
 package com.learn.cursomc.resources.exceptions;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +11,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.learn.cursomc.services.exceptions.DataIntegrityException;
 import com.learn.cursomc.services.exceptions.ObjectNotFoundException;
+import com.learn.cursomc.utils.format.FormatUtils;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
-	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS");
-	
 	@ExceptionHandler(ObjectNotFoundException.class)
 	public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e) {
 		StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(), getFormatDate());
@@ -41,8 +37,6 @@ public class ResourceExceptionHandler {
 	}
 	
 	private String getFormatDate() {
-		Calendar cal = new GregorianCalendar();
-		cal.setTime(new Date());
-		return sdf.format(cal.getTime());
+		return FormatUtils.formatDate(new Date(), FormatUtils.separator_slash_DDMMYYHHMMSSML);
 	}
 }

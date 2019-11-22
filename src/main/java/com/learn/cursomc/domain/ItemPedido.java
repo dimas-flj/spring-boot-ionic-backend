@@ -6,6 +6,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.learn.cursomc.utils.format.FormatUtils;
 
 @Entity
 public class ItemPedido implements Serializable {
@@ -114,5 +115,21 @@ public class ItemPedido implements Serializable {
 		}
 		
 		return true;
+	}
+	
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		
+		builder.append("    Produto: " + getProduto().getNome());
+		builder.append("\r\n");
+		builder.append("    Quantidade: " + getQuantidade());
+		builder.append("\r\n");
+		builder.append("    Preço Unitário: " + FormatUtils.formatBRMonetary(getPreco()));
+		builder.append("\r\n");
+		builder.append("    Subtotal: " + FormatUtils.formatBRMonetary(getSubTotal()));
+		builder.append("\r\n");
+		builder.append("\r\n");
+		
+		return builder.toString();
 	}
 }

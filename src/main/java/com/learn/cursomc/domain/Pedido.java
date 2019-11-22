@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.learn.cursomc.utils.format.FormatUtils;
 
 @Entity
 public class Pedido implements Serializable {
@@ -141,7 +142,26 @@ public class Pedido implements Serializable {
 	}
 	
 	public String toString() {
-		return "Pedido [id=" + id + ", instante=" + instante + ", pagamento=" + pagamento + ", cliente=" + cliente
-				+ ", enderecoDeEntrega=" + enderecoDeEntrega + "]";
+		StringBuilder builder = new StringBuilder();
+		
+		builder.append("\r\n");
+		builder.append("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
+		builder.append("\r\n");
+		builder.append("Pedido número: " + getId());
+		builder.append("\r\n");
+		builder.append("Instante: " + FormatUtils.formatDate(getInstante(), FormatUtils.separator_slash_DDMMYYYYHHMMSS));
+		builder.append("\r\n");
+		builder.append("Cliente: " + getCliente().getNome());
+		builder.append("\r\n");
+		builder.append("Situação do Pagamento: " + getPagamento().getEstado().getDescricao());
+		builder.append("\r\n");
+		builder.append("Detalhes:");
+		builder.append("\r\n");
+		for(ItemPedido ip : getItens()) {
+			builder.append(ip.toString());
+		}
+		builder.append("Valor Total: " + FormatUtils.formatBRMonetary(getValorTotal()));
+		
+		return builder.toString();
 	}
 }
