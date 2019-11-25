@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.learn.cursomc.services.exceptions.AuthorizationException;
 import com.learn.cursomc.services.exceptions.DataIntegrityException;
 import com.learn.cursomc.services.exceptions.ObjectNotFoundException;
 import com.learn.cursomc.utils.format.FormatUtils;
@@ -38,5 +39,11 @@ public class ResourceExceptionHandler {
 	
 	private String getFormatDate() {
 		return FormatUtils.formatDate(new Date(), FormatUtils.separator_slash_DDMMYYHHMMSSML);
+	}
+	
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<StandardError> authorization(AuthorizationException e) {
+		StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage(), getFormatDate());
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
 	}
 }

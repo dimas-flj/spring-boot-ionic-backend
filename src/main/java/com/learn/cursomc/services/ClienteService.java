@@ -15,11 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.learn.cursomc.domain.Cidade;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Endereco;
+import com.learn.cursomc.domain.enums.Perfil;
 import com.learn.cursomc.domain.enums.TipoCliente;
 import com.learn.cursomc.dto.ClienteDTO;
 import com.learn.cursomc.dto.ClienteNewDTO;
 import com.learn.cursomc.repositories.ClienteRepository;
 import com.learn.cursomc.repositories.EnderecoRepository;
+import com.learn.cursomc.security.UserSS;
+import com.learn.cursomc.services.exceptions.AuthorizationException;
 import com.learn.cursomc.services.exceptions.DataIntegrityException;
 import com.learn.cursomc.services.exceptions.ObjectNotFoundException;
 import com.learn.cursomc.utils.Util;
@@ -35,7 +38,12 @@ public class ClienteService {
 	@Autowired
 	private EnderecoRepository enderecoRepository;
 	
-	public Cliente find(Integer id_busca) throws ObjectNotFoundException {
+	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {
+		UserSS user = UserService.authenticated();
+		if (Util.isNull(user) || (!user.hasHole(Perfil.ADMIN) && !id_busca.equals(user.getId()))) {
+			throw new AuthorizationException("Acesso negado. Este cliente não possue autorização para acessar este recurso.");
+		}
+		
 		Optional<Cliente> cat = cli.findById(id_busca);
 		// este sem tratamento -> return cat.orElse(null);
 		// OR
