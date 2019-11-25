@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.learn.cursomc.security.JWTAuthenticationFilter;
+import com.learn.cursomc.security.JWTAuthorizationFilter;
 import com.learn.cursomc.security.JWTUtil;
 
 @Configuration
@@ -33,9 +34,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private JWTUtil jwtUtil;
 	
-	public static final String[] PUBLIC_MATCHES = {"/h2-console/**"};
+	public static final String[] PUBLIC_MATCHES = {
+		"/h2-console/**"
+	};
 	
-	public static final String[] PUBLIC_MATCHES_GET = {"/produtos/**", "/categorias/**", "/clientes/**"};
+	public static final String[] PUBLIC_MATCHES_GET = {
+		"/produtos/**", 
+		"/categorias/**", 
+		"/clientes/**"
+	};
 	
 	protected void configure(HttpSecurity http) throws Exception {
 		// configuracao para peculiaridade do DB em memoria H2
@@ -58,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			anyRequest().authenticated();
 		
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
-		super.configure(http);
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		
 		// assegura que esse back-ende nao crie sessao de usuario
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
