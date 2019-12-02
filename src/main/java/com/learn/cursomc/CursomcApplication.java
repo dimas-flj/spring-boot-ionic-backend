@@ -5,12 +5,15 @@ import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//Teste de upload sem endpoint
+//import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.learn.cursomc.services.S3Service;
+//Teste de upload sem endpoint
+//import com.learn.cursomc.services.S3Service;
 
 @SpringBootApplication
 public class CursomcApplication implements CommandLineRunner {
@@ -18,11 +21,13 @@ public class CursomcApplication implements CommandLineRunner {
 		SpringApplication.run(CursomcApplication.class, args);
 	}
 	
-	@Autowired
-	private S3Service s3Service;
+	//Teste de upload sem endpoint
+//	@Autowired
+//	private S3Service s3Service;
 	
 	public void run(String... args) throws Exception {
-		s3Service.uploadFile("C:\\Particular\\AULAS_UDEMY\\Material de apoio\\Capturar.JPG");
+		//Teste de upload sem endpoint
+		//s3Service.uploadFile("C:\\Particular\\AULAS_UDEMY\\Material de apoio\\Capturar.JPG");
 	}
 	
 	@PostConstruct
