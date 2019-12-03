@@ -56,7 +56,7 @@ public class ClienteService {
 	
 	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {
 		UserSS user = UserService.authenticated();
-		if (Util.isNull(user) || (!user.hasHole(Perfil.ADMIN) && !id_busca.equals(user.getId()))) {
+		if (Util.isNull(user) || (!user.hasRole(Perfil.ADMIN) && !id_busca.equals(user.getId()))) {
 			throw new AuthorizationException("Acesso negado. Este cliente não possue autorização para acessar este recurso.");
 		}
 		
@@ -86,7 +86,7 @@ public class ClienteService {
 		try {
 			cli.deleteById(id);
 		}
-		catch (DataIntegrityViolationException e) {
+		catch(DataIntegrityViolationException e) {
 			e.printStackTrace();
 			throw new DataIntegrityException("Não é possível excluir o cliente porque há pedidos relacionados.");
 		}
@@ -94,6 +94,19 @@ public class ClienteService {
 	
 	public List<Cliente> findAll() {
 		return cli.findAll();
+	}
+	
+	public Cliente findByEmail(String email) {
+		UserSS user = UserService.authenticated();
+		if (Util.isNull(user) || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
+		Cliente obj = cli.findByEmail(email);
+		if (Util.isNull(obj)) {
+			throw new ObjectNotFoundException("Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + Cliente.class.getName());
+		}
+		return obj;
 	}
 	
 	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {

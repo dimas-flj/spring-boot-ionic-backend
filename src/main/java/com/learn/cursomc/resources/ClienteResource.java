@@ -28,18 +28,24 @@ import com.learn.cursomc.services.ClienteService;
 @RequestMapping(value="/clientes")
 public class ClienteResource {
 	@Autowired
-	private ClienteService cs;
+	private ClienteService clienteService;
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Cliente> find(@PathVariable Integer id) {
-		Cliente cliente = cs.find(id);
+		Cliente cliente = clienteService.find(id);
 		return ResponseEntity.ok().body(cliente);
+	}
+	
+	@RequestMapping(value="/email", method=RequestMethod.GET)
+	public ResponseEntity<Cliente> find(@RequestParam(value="value") String email) {
+		Cliente obj = clienteService.findByEmail(email);
+		return ResponseEntity.ok().body(obj);
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDto) {
-		Cliente obj = cs.fromDTO(objDto);
-		obj = cs.insert(obj);
+		Cliente obj = clienteService.fromDTO(objDto);
+		obj = clienteService.insert(obj);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
@@ -47,9 +53,9 @@ public class ClienteResource {
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDto, @PathVariable Integer id) {
-		Cliente obj = cs.fromDTO(objDto);
+		Cliente obj = clienteService.fromDTO(objDto);
 		obj.setId(id);
-		obj = cs.update(obj);
+		obj = clienteService.update(obj);
 		
 		return ResponseEntity.noContent().build();
 	}
@@ -57,14 +63,14 @@ public class ClienteResource {
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
-		cs.delete(id);
+		clienteService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<ClienteDTO>> findAll() {
-		List<Cliente> list = cs.findAll();
+		List<Cliente> list = clienteService.findAll();
 		List<ClienteDTO> listDto = list.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList()); 
 		return ResponseEntity.ok().body(listDto);
 	}
@@ -77,14 +83,14 @@ public class ClienteResource {
 		@RequestParam(value="orderBy", defaultValue="nome") String orderBy, 
 		@RequestParam(value="direction", defaultValue="ASC") String direction) {
 		
-		Page<Cliente> list = cs.findPage(page, linesPerPage, orderBy, direction);
+		Page<Cliente> list = clienteService.findPage(page, linesPerPage, orderBy, direction);
 		Page<ClienteDTO> listDto = list.map(obj -> new ClienteDTO(obj)); 
 		return ResponseEntity.ok().body(listDto);
 	}
 	
 	@RequestMapping(value="/picture", method=RequestMethod.POST)
 	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name="file") MultipartFile file) {
-		URI uri = cs.uploadProfilePicture(file);
+		URI uri = clienteService.uploadProfilePicture(file);
 		return ResponseEntity.created(uri).build();
 	}
 }
