@@ -36,20 +36,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private JWTUtil jwtUtil;
 	
-	public static final String[] PUBLIC_MATCHES = {
-		"/h2-console/**"
-	};
+	public static final String[] PUBLIC_MATCHES = {"/h2-console/**"};
 	
-	public static final String[] PUBLIC_MATCHES_GET = {
-		"/produtos/**", 
-		"/categorias/**", 
-		"/estados/**"
-	};
+	public static final String[] PUBLIC_MATCHES_GET = {"/produtos/**", "/categorias/**", "/estados/**"};
 	
-	public static final String[] PUBLIC_MATCHES_POST = {
-		"/clientes", 
-		"/auth/forgot/**"
-	};
+	public static final String[] PUBLIC_MATCHES_POST = {"/clientes", "/auth/forgot/**"};
 	
 	protected void configure(HttpSecurity http) throws Exception {
 		// configuracao para peculiaridade do DB em memoria H2
@@ -59,19 +50,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		// ativa o metodo abaixo corsConfigurationSource()
 		http.cors().
-			// desabilita protecao CSRF em sistemas stateless
+		// desabilita protecao CSRF em sistemas stateless
 			and().csrf().disable();
 		
 		http.
-			// autoriza todos os caminhos do vetor PUBLIC_MATCHES
-			authorizeRequests().
-				antMatchers(HttpMethod.POST, PUBLIC_MATCHES_POST).permitAll().
-				antMatchers(HttpMethod.GET, PUBLIC_MATCHES_GET).permitAll().
-				antMatchers(PUBLIC_MATCHES).permitAll().
+		// autoriza todos os caminhos do vetor PUBLIC_MATCHES
+			authorizeRequests().antMatchers(HttpMethod.POST, PUBLIC_MATCHES_POST).permitAll().antMatchers(HttpMethod.GET, PUBLIC_MATCHES_GET).permitAll().antMatchers(PUBLIC_MATCHES).permitAll().
 			
 			// exige autenticacao para caminhos nao existentes no vetor PUBLIC_MATCHES
 			anyRequest().authenticated();
-		
+			
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		
@@ -85,8 +73,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Bean
 	protected CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+		configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+		source.registerCorsConfiguration("/**", configuration);
+		
 		return source;
 	}
 	
