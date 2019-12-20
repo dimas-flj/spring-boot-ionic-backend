@@ -149,7 +149,7 @@ public class ClienteService {
 		jpgImage = imageService.cropSquare(jpgImage);
 		jpgImage = imageService.resize(jpgImage, Integer.parseInt(size));
 		
-		String fileName = prefix + "_" + user.getId() + ".jpg";
+		String fileName = prefix + user.getId() + ".jpg";
 		
 		return s3Service.uploadFile(imageService.getImageInputStream(jpgImage, "jpg"), fileName, "image");
 	}
