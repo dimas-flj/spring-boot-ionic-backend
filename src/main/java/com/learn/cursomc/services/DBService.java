@@ -76,11 +76,11 @@ public class DBService {
 		Produto p1 = new Produto(null, "Computador", 2000.00);
 		Produto p2 = new Produto(null, "Impressora", 800.00);
 		Produto p3 = new Produto(null, "Mouse", 80.00);
-		Produto p4 = new Produto(null, "Mesa de Escrtório", 300.00);
+		Produto p4 = new Produto(null, "Mesa de Escrtório", 230.00);
 		Produto p5 = new Produto(null, "Toalha", 50.00);
 		Produto p6 = new Produto(null, "Colcha", 200.00);
-		Produto p7 = new Produto(null, "TV True Color", 1200.00);
-		Produto p8 = new Produto(null, "Roçadeira", 800.00);
+		Produto p7 = new Produto(null, "TV True Color", 4200.00);
+		Produto p8 = new Produto(null, "Roçadeira", 1200.00);
 		Produto p9 = new Produto(null, "Abajour", 100.00);
 		Produto p10 = new Produto(null, "Pendente", 180.00);
 		Produto p11 = new Produto(null, "Shampoo", 90.00);
@@ -212,7 +212,11 @@ public class DBService {
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
 		Cliente cli1 = new Cliente(null, "Dimas Junior", "dimasflj@gmail.com", "36378912377", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("1234"));
+<<<<<<< HEAD
 				cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+=======
+		cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+>>>>>>> 2fac3226c109f98285b3cd649488abb447670202
 		
 		Cliente cli2 = new Cliente(null, "Ana Costa", "dimas_flj@yahoo.com.br", "00986979350", TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("1234"));
 		cli2.addPerfil(Perfil.ADMIN);
