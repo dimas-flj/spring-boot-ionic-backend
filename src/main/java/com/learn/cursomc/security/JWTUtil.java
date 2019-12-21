@@ -2,7 +2,6 @@ package com.learn.cursomc.security;
 
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.learn.cursomc.utils.Util;
@@ -13,14 +12,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTUtil {
-	@Value("${jwt.secret}")
 	private String secret;
-	
-	@Value("${jwt.expiration}")
 	private Long expiration;
 	
 	public String generateToken(String username) {
-		System.out.println(":::::::::::::::::: PROP => JWT.SECRET = \"" + secret + "\" ::::::::::::::::::");
 		return Jwts.
 				builder().
 				setSubject(username).
@@ -61,5 +56,21 @@ public class JWTUtil {
 			}
 		}
 		return null;
+	}
+	
+	public String getSecret() {
+		return secret;
+	}
+	
+	public void setSecret(String secret) {
+		this.secret = secret;
+	}
+	
+	public Long getExpiration() {
+		return expiration;
+	}
+	
+	public void setExpiration(Long expiration) {
+		this.expiration = expiration;
 	}
 }

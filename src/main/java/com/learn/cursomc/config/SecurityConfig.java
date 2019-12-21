@@ -3,6 +3,7 @@ package com.learn.cursomc.config;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -27,6 +28,12 @@ import com.learn.cursomc.security.JWTUtil;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+	@Value("${jwt.secret}")
+	private String secret;
+	
+	@Value("${jwt.expiration}")
+	private Long expiration;
+	
 	@Autowired
 	private UserDetailsService userDetailsService;
 	
@@ -59,7 +66,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			
 			// exige autenticacao para caminhos nao existentes no vetor PUBLIC_MATCHES
 			anyRequest().authenticated();
-			
+		
+		jwtUtil.setSecret(secret);
+		jwtUtil.setExpiration(expiration);
+		
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		
