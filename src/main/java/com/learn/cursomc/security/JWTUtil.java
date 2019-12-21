@@ -20,6 +20,7 @@ public class JWTUtil {
 	private Long expiration;
 	
 	public String generateToken(String username) {
+		System.out.println(":::::::::::::::::: PROP => JWT.SECRET = \"" + secret + "\" ::::::::::::::::::");
 		return Jwts.
 				builder().
 				setSubject(username).
