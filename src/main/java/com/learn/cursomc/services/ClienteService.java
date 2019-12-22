@@ -52,7 +52,6 @@ public class ClienteService {
 	private AppGlobalConfigurations gConfig;
 	
 	private String profile;
-	
 	private String profile_size;
 	
 	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {

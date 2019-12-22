@@ -17,17 +17,19 @@ public class S3Config {
 	
 	private String access_key_id;
 	private String secret_access_key;
+	private String region;
 	
 	@Bean
 	public AmazonS3 s3Client() {
 		access_key_id = gConfig.getAws().getAccesskeyId();
 		secret_access_key = gConfig.getAws().getSecretAccessKey();
+		region = gConfig.getS3().getRegion();
 		
 		BasicAWSCredentials awsCred = new BasicAWSCredentials(access_key_id, secret_access_key);
 		AmazonS3 s3Client = 
 				AmazonS3ClientBuilder.
 				standard().
-				withRegion(Regions.fromName(gConfig.getS3().getRegion())).
+				withRegion(Regions.fromName(region)).
 				withCredentials(new AWSStaticCredentialsProvider(awsCred)).
 				build();
 		
