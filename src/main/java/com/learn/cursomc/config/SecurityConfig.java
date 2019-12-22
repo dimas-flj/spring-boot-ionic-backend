@@ -3,7 +3,6 @@ package com.learn.cursomc.config;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -28,12 +27,6 @@ import com.learn.cursomc.security.JWTUtil;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	@Value("${jwt.secret}")
-	private String secret;
-	
-	@Value("${jwt.expiration}")
-	private Long expiration;
-	
 	@Autowired
 	private UserDetailsService userDetailsService;
 	
@@ -43,11 +36,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private JWTUtil jwtUtil;
 	
-	public static final String[] PUBLIC_MATCHES = {"/h2-console/**"};
+	public static final String[] PUBLIC_MATCHES = {
+		"/h2-console/**"
+	};
 	
-	public static final String[] PUBLIC_MATCHES_GET = {"/produtos/**", "/categorias/**", "/estados/**"};
+	public static final String[] PUBLIC_MATCHES_GET = {
+		"/produtos/**", 
+		"/categorias/**", 
+		"/estados/**"
+	};
 	
-	public static final String[] PUBLIC_MATCHES_POST = {"/clientes", "/auth/forgot/**"};
+	public static final String[] PUBLIC_MATCHES_POST = {
+		"/clientes", 
+		"/auth/forgot/**"
+	};
 	
 	protected void configure(HttpSecurity http) throws Exception {
 		// configuracao para peculiaridade do DB em memoria H2
@@ -58,17 +60,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// ativa o metodo abaixo corsConfigurationSource()
 		http.cors().
 		// desabilita protecao CSRF em sistemas stateless
-			and().csrf().disable();
+		and().csrf().disable();
 		
 		http.
 		// autoriza todos os caminhos do vetor PUBLIC_MATCHES
-			authorizeRequests().antMatchers(HttpMethod.POST, PUBLIC_MATCHES_POST).permitAll().antMatchers(HttpMethod.GET, PUBLIC_MATCHES_GET).permitAll().antMatchers(PUBLIC_MATCHES).permitAll().
-			
-			// exige autenticacao para caminhos nao existentes no vetor PUBLIC_MATCHES
-			anyRequest().authenticated();
+		authorizeRequests().antMatchers(HttpMethod.POST, PUBLIC_MATCHES_POST).permitAll().
+		antMatchers(HttpMethod.GET, PUBLIC_MATCHES_GET).permitAll().
+		antMatchers(PUBLIC_MATCHES).permitAll().
 		
-		jwtUtil.setSecret(secret);
-		jwtUtil.setExpiration(expiration);
+		// exige autenticacao para caminhos nao existentes no vetor PUBLIC_MATCHES
+		anyRequest().authenticated();
 		
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
