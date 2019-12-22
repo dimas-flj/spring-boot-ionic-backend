@@ -20,6 +20,5 @@ public interface EmailService {
 	void sendHtmlEmail(MimeMessage msg);
 	// VERSAO HTML ::::::::::::
 	
-	
 	void sendNewPasswordEmail(Cliente cliente, String newPass);
 }

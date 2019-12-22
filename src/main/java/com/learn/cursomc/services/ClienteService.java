@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.learn.cursomc.config.AppGlobalConfigurations;
 import com.learn.cursomc.domain.Cidade;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Endereco;
@@ -48,11 +48,8 @@ public class ClienteService {
 	@Autowired
 	private ImageService imageService;
 	
-	@Value("${img.prefix.client.profile}")
-	private String prefix;
-	
-	@Value("${img.profile.size}")
-	private String size;
+	@Autowired
+	private AppGlobalConfigurations gConfig;
 	
 	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {
 		UserSS user = UserService.authenticated();
@@ -147,9 +144,9 @@ public class ClienteService {
 		
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
 		jpgImage = imageService.cropSquare(jpgImage);
-		jpgImage = imageService.resize(jpgImage, Integer.parseInt(size));
+		jpgImage = imageService.resize(jpgImage, Integer.parseInt(gConfig.getImg().getProfileSize()));
 		
-		String fileName = prefix + user.getId() + ".jpg";
+		String fileName = gConfig.getImg().getPrefixClientProfile() + user.getId() + ".jpg";
 		
 		return s3Service.uploadFile(imageService.getImageInputStream(jpgImage, "jpg"), fileName, "image");
 	}
