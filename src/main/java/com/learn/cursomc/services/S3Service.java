@@ -30,12 +30,16 @@ public class S3Service {
 	@Autowired
 	private AppGlobalConfigurations gConfig;
 	
+	private String bucket_name;
+	
 	//Método de Teste de upload sem endpoint
 	public void uploadFile(String localFilePath) {
 		try {
+			bucket_name = gConfig.getS3().getBucket();
+			
 			File file = new File(localFilePath);
 			LOG.info("Iniciando upload.");
-			s3Client.putObject(new PutObjectRequest(gConfig.getS3().getBucket(), "capturar.jpg", file));
+			s3Client.putObject(new PutObjectRequest(bucket_name, "capturar.jpg", file));
 			LOG.info("Upload finalizado.");
 		}
 		catch(AmazonServiceException e) {
@@ -63,14 +67,16 @@ public class S3Service {
 	
 	public URI uploadFile(InputStream is, String fileName, String contentType) {
 		try {
+			bucket_name = gConfig.getS3().getBucket();
+			
 			ObjectMetadata meta = new ObjectMetadata();
 			meta.setContentType(contentType);
 			
 			LOG.info("Iniciando upload.");
-			s3Client.putObject(gConfig.getS3().getBucket(), fileName, is, meta);
+			s3Client.putObject(bucket_name, fileName, is, meta);
 			LOG.info("Upload finalizado.");
 			
-			return s3Client.getUrl(gConfig.getS3().getBucket(), fileName).toURI();
+			return s3Client.getUrl(bucket_name, fileName).toURI();
 		}
 		catch(URISyntaxException e) {
 			throw new FileException("Erro ao converter URL pata URI.");

@@ -68,6 +68,7 @@ public abstract class AbstractEmailService implements EmailService {
 	
 	protected MimeMessage prepareMimeMessageFromPedido(Pedido obj) throws MessagingException {
 		mail_sender = gConfig.getMail().getSender();
+		
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
 		
@@ -88,6 +89,7 @@ public abstract class AbstractEmailService implements EmailService {
 	
 	protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass) {
 		mail_sender = gConfig.getMail().getSender();
+		
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
 		sm.setTo(cliente.getEmail());

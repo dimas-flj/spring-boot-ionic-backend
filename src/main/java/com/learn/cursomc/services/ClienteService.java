@@ -51,6 +51,10 @@ public class ClienteService {
 	@Autowired
 	private AppGlobalConfigurations gConfig;
 	
+	private String profile;
+	
+	private String profile_size;
+	
 	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {
 		UserSS user = UserService.authenticated();
 		if (Util.isNull(user) || (!user.hasRole(Perfil.ADMIN) && !id_busca.equals(user.getId()))) {
@@ -142,11 +146,14 @@ public class ClienteService {
 			throw new AuthorizationException("Acesso negado.");
 		}
 		
+		profile = gConfig.getImg().getPrefixClientProfile();
+		profile_size = gConfig.getImg().getProfileSize();
+		
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
 		jpgImage = imageService.cropSquare(jpgImage);
-		jpgImage = imageService.resize(jpgImage, Integer.parseInt(gConfig.getImg().getProfileSize()));
+		jpgImage = imageService.resize(jpgImage, Integer.parseInt(profile_size));
 		
-		String fileName = gConfig.getImg().getPrefixClientProfile() + user.getId() + ".jpg";
+		String fileName = profile + user.getId() + ".jpg";
 		
 		return s3Service.uploadFile(imageService.getImageInputStream(jpgImage, "jpg"), fileName, "image");
 	}

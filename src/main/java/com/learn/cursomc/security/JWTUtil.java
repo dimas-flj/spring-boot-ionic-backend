@@ -17,12 +17,18 @@ public class JWTUtil {
 	@Autowired
 	private AppGlobalConfigurations gConfig;
 	
+	private String secret;
+	private Long expiration;
+	
 	public String generateToken(String username) {
+		secret = gConfig.getJwt().getSecret();
+		expiration = gConfig.getJwt().getExpiration();
+		
 		return Jwts.
 				builder().
 				setSubject(username).
-				setExpiration(new Date(System.currentTimeMillis() + gConfig.getJwt().getExpiration())).
-				signWith(SignatureAlgorithm.HS512, gConfig.getJwt().getSecret().getBytes()).
+				setExpiration(new Date(System.currentTimeMillis() + expiration)).
+				signWith(SignatureAlgorithm.HS512, secret.getBytes()).
 				compact();
 	}
 	
@@ -42,7 +48,8 @@ public class JWTUtil {
 	
 	private Claims getClaims(String token) {
 		try {
-			return Jwts.parser().setSigningKey(gConfig.getJwt().getSecret().getBytes()).parseClaimsJws(token).getBody();
+			secret = gConfig.getJwt().getSecret();
+			return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody();
 		}
 		catch(Exception e) {
 			return null;
