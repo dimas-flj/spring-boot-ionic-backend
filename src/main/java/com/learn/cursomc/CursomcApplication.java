@@ -1,6 +1,5 @@
 package com.learn.cursomc;
 
-import java.util.Date;
 import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +16,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class CursomcApplication implements CommandLineRunner {
+//	@Value("${app.mail.sender}") 
+//	private String app_mail_sender;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
 	}
@@ -28,11 +30,29 @@ public class CursomcApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		//Teste de upload sem endpoint
 		//s3Service.uploadFile("C:\\Particular\\AULAS_UDEMY\\Material de apoio\\Capturar.JPG");
+		
+//		AppGlobalConfigurations gConfig = new AppGlobalConfigurations();
+//		System.out.println("run() gConfig.getAws() = " + gConfig.getAws());
+//		System.out.println("run() gConfig.getImg() = " + gConfig.getImg());
+//		System.out.println("run() gConfig.getJwt() = " + gConfig.getJwt());
+//		System.out.println("run() gConfig.getMail() = " + gConfig.getMail());
+//		System.out.println("run() gConfig.getS3() = " + gConfig.getS3());
+//		
+//		System.out.println("app_mail_sender + " + app_mail_sender);
 	}
 	
 	@PostConstruct
 	public void init() {
 		TimeZone.setDefault(TimeZone.getTimeZone("GMT-3"));
-		System.out.println("Date in new GMT: " + new Date().toString());
+//		System.out.println("Date in new GMT: " + new Date().toString());
+//		
+//		AppGlobalConfigurations gConfig = new AppGlobalConfigurations();
+//		System.out.println("init() gConfig.getAws() = " + gConfig.getAws());
+//		System.out.println("init() gConfig.getImg() = " + gConfig.getImg());
+//		System.out.println("init() gConfig.getJwt() = " + gConfig.getJwt());
+//		System.out.println("init() gConfig.getMail() = " + gConfig.getMail());
+//		System.out.println("init() gConfig.getS3() = " + gConfig.getS3());
+//		
+//		System.out.println("app_mail_sender + " + app_mail_sender);
 	}
 }

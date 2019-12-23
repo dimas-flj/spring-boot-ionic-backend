@@ -25,6 +25,10 @@ public class S3Config {
 		secret_access_key = gConfig.getAws().getSecretAccessKey();
 		region = gConfig.getS3().getRegion();
 		
+		System.out.println("s3Client() access_key_id = " + access_key_id);
+		System.out.println("s3Client() secret_access_key = " + secret_access_key);
+		System.out.println("s3Client() region = " + region);
+		
 		BasicAWSCredentials awsCred = new BasicAWSCredentials(access_key_id, secret_access_key);
 		AmazonS3 s3Client = 
 				AmazonS3ClientBuilder.

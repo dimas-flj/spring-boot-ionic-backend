@@ -30,14 +30,14 @@
     "description": "A description for 'app.s3.region'"
   },
   {
-    "name": "app.img.prefix.client.profile",
+    "name": "app.img.prefix_client_profile",
     "type": "java.lang.String",
-    "description": "A description for 'app.img.prefix.client.profile'"
+    "description": "A description for 'app.img.prefix_client_profile'"
   },
   {
-    "name": "app.img.profile.size",
+    "name": "app.img.profile_size",
     "type": "java.lang.String",
-    "description": "A description for 'app.img.profile.size'"
+    "description": "A description for 'app.img.profile_size'"
   },
   {
     "name": "app.mail.sender",

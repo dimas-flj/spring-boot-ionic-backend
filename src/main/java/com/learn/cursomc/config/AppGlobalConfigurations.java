@@ -12,10 +12,10 @@ public class AppGlobalConfigurations {
 	private Img img = new Img();
 	private Mail mail = new Mail();
 	
-	public static class Jwt {
+	public class Jwt {
 		private String secret;
 		private Long expiration;
-		
+
 		public String getSecret() {
 			return secret;
 		}
@@ -43,7 +43,7 @@ public class AppGlobalConfigurations {
 		}
 	}
 	
-	public static class Aws {
+	public class Aws {
 		private String access_key_id;
 		private String secret_access_key;
 		
@@ -74,7 +74,7 @@ public class AppGlobalConfigurations {
 		}
 	}
 	
-	public static class S3 {
+	public class S3 {
 		private String bucket;
 		private String region;
 		
@@ -105,38 +105,38 @@ public class AppGlobalConfigurations {
 		}
 	}
 	
-	public static class Img {
-		private String prefixClientProfile;
-		private String profileSize;
+	public class Img {
+		private String prefix_client_profile;
+		private String profile_size;
 		
 		public String getPrefixClientProfile() {
-			return prefixClientProfile;
+			return prefix_client_profile;
 		}
 		
 		public void setPrefixClientProfile(String prefixClientProfile) {
-			this.prefixClientProfile = prefixClientProfile;
+			this.prefix_client_profile = prefixClientProfile;
 		}
 		
 		public String getProfileSize() {
-			return profileSize;
+			return profile_size;
 		}
 		
 		public void setProfileSize(String profileSize) {
-			this.profileSize = profileSize;
+			this.profile_size = profileSize;
 		}
 		
 		public String toString() {
 			StringBuilder builder = new StringBuilder();
 			builder.append("Img [prefixClientProfile=");
-			builder.append(prefixClientProfile);
+			builder.append(prefix_client_profile);
 			builder.append(", profileSize=");
-			builder.append(profileSize);
+			builder.append(profile_size);
 			builder.append("]");
 			return builder.toString();
 		}
 	}
 	
-	public static class Mail {
+	public class Mail {
 		private String sender;
 		private String recipient;
 		
@@ -167,51 +167,41 @@ public class AppGlobalConfigurations {
 		}
 	}
 
-	
 	public Jwt getJwt() {
 		return jwt;
 	}
-
 	
 	public void setJwt(Jwt jwt) {
 		this.jwt = jwt;
 	}
-
 	
 	public Aws getAws() {
 		return aws;
 	}
-
 	
 	public void setAws(Aws aws) {
 		this.aws = aws;
 	}
-
 	
 	public S3 getS3() {
 		return s3;
 	}
-
 	
 	public void setS3(S3 s3) {
 		this.s3 = s3;
 	}
-
 	
 	public Img getImg() {
 		return img;
 	}
-
 	
 	public void setImg(Img img) {
 		this.img = img;
 	}
-
 	
 	public Mail getMail() {
 		return mail;
 	}
-
 	
 	public void setMail(Mail mail) {
 		this.mail = mail;
