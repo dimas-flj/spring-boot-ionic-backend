@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.learn.cursomc.config.AppGlobalConfigurations;
+import com.learn.cursomc.config.ConfigProperties;
 import com.learn.cursomc.domain.Cidade;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Endereco;
@@ -49,7 +49,7 @@ public class ClienteService {
 	private ImageService imageService;
 	
 	@Autowired
-	private AppGlobalConfigurations gConfig;
+	private ConfigProperties config;
 	
 	private String profile;
 	private String profile_size;
@@ -145,8 +145,8 @@ public class ClienteService {
 			throw new AuthorizationException("Acesso negado.");
 		}
 		
-		profile = gConfig.getImg().getPrefixClientProfile();
-		profile_size = gConfig.getImg().getProfileSize();
+		profile = config.getImgPrefixClientProfile();
+		profile_size = config.getImgProfileSize();
 		
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
 		jpgImage = imageService.cropSquare(jpgImage);

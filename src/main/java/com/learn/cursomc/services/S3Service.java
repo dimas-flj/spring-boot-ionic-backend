@@ -17,7 +17,7 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.learn.cursomc.config.AppGlobalConfigurations;
+import com.learn.cursomc.config.ConfigProperties;
 import com.learn.cursomc.services.exceptions.FileException;
 
 @Service
@@ -28,14 +28,14 @@ public class S3Service {
 	private AmazonS3 s3Client;
 	
 	@Autowired
-	private AppGlobalConfigurations gConfig;
+	private ConfigProperties config;
 	
 	private String bucket_name;
 	
-	//Método de Teste de upload sem endpoint
+	// Método de Teste de upload sem endpoint
 	public void uploadFile(String localFilePath) {
 		try {
-			bucket_name = gConfig.getS3().getBucket();
+			bucket_name = config.getS3Bucket();
 			
 			File file = new File(localFilePath);
 			LOG.info("Iniciando upload.");
@@ -67,7 +67,7 @@ public class S3Service {
 	
 	public URI uploadFile(InputStream is, String fileName, String contentType) {
 		try {
-			bucket_name = gConfig.getS3().getBucket();
+			bucket_name = config.getS3Bucket();
 			
 			ObjectMetadata meta = new ObjectMetadata();
 			meta.setContentType(contentType);

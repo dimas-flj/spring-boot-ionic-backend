@@ -12,7 +12,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import com.learn.cursomc.config.AppGlobalConfigurations;
+import com.learn.cursomc.config.ConfigProperties;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Pedido;
 
@@ -24,7 +24,7 @@ public abstract class AbstractEmailService implements EmailService {
 	private JavaMailSender javaMailSender;
 	
 	@Autowired
-	private AppGlobalConfigurations gConfig;
+	private ConfigProperties config;
 	
 	private String mail_sender;
 	
@@ -34,7 +34,7 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	protected SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido obj) {
-		mail_sender = gConfig.getMail().getSender();
+		mail_sender = config.getMailSender();
 		
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
@@ -67,7 +67,7 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	protected MimeMessage prepareMimeMessageFromPedido(Pedido obj) throws MessagingException {
-		mail_sender = gConfig.getMail().getSender();
+		mail_sender = config.getMailSender();
 		
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
@@ -88,7 +88,7 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass) {
-		mail_sender = gConfig.getMail().getSender();
+		mail_sender = config.getMailSender();
 		
 		SimpleMailMessage sm = new SimpleMailMessage();
 		

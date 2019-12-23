@@ -13,7 +13,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 @Configuration
 public class S3Config {
 	@Autowired
-	private AppGlobalConfigurations gConfig;
+	private ConfigProperties config;
 	
 	private String access_key_id;
 	private String secret_access_key;
@@ -21,13 +21,9 @@ public class S3Config {
 	
 	@Bean
 	public AmazonS3 s3Client() {
-		access_key_id = gConfig.getAws().getAccesskeyId();
-		secret_access_key = gConfig.getAws().getSecretAccessKey();
-		region = gConfig.getS3().getRegion();
-		
-		System.out.println("s3Client() access_key_id = " + access_key_id);
-		System.out.println("s3Client() secret_access_key = " + secret_access_key);
-		System.out.println("s3Client() region = " + region);
+		access_key_id = config.getAWSAccessKeyId();
+		secret_access_key = config.getAWSSecretAccessKey();
+		region = config.getS3Region();
 		
 		BasicAWSCredentials awsCred = new BasicAWSCredentials(access_key_id, secret_access_key);
 		AmazonS3 s3Client = 
