@@ -2,54 +2,54 @@
 	"properties": 
 	[
 		{
-			"name": "app.jwt_secret",
+			"name": "app_jwt_secret",
 			"type": "java.lang.String",
-			"description": "A description for 'app.jwt_secret'"
+			"description": "A description for 'app_jwt_secret'"
 		},
 		{
-			"name": "app.jwt_expiration",
+			"name": "app_jwt_expiration",
 			"type": "java.lang.String",
-			"description": "A description for 'app.jwt_expiration'"
+			"description": "A description for 'app_jwt_expiration'"
 		},
 		{
-			"name": "app.aws_access_key_id",
+			"name": "app_aws_access_key_id",
 			"type": "java.lang.String",
-			"description": "A description for 'app.aws_access_key_id'"
+			"description": "A description for 'app_aws_access_key_id'"
 		},
 		{
-			"name": "app.aws_secret_access_key",
+			"name": "app_aws_secret_access_key",
 			"type": "java.lang.String",
-			"description": "A description for 'app.aws_secret_access_key'"
+			"description": "A description for 'app_aws_secret_access_key'"
 		},
 		{
-			"name": "app.s3_bucket",
+			"name": "app_s3_bucket",
 			"type": "java.lang.String",
-			"description": "A description for 'app.s3_bucket'"
+			"description": "A description for 'app_s3_bucket'"
 		},
 		{
-			"name": "app.s3_region",
+			"name": "app_s3_region",
 			"type": "java.lang.String",
-			"description": "A description for 'app.s3_region'"
+			"description": "A description for 'app_s3_region'"
 		},
 		{
-			"name": "app.img_prefix_client_profile",
+			"name": "app_img_prefix_client_profile",
 			"type": "java.lang.String",
-			"description": "A description for 'app.img_prefix_client_profile'"
+			"description": "A description for 'app_img_prefix_client_profile'"
 		},
 		{
-			"name": "app.img_profile_size",
+			"name": "app_img_profile_size",
 			"type": "java.lang.String",
-			"description": "A description for 'app.img_profile_size'"
+			"description": "A description for 'app_img_profile_size'"
 		},
 		{
-			"name": "app.mail_sender",
+			"name": "app_mail_sender",
 			"type": "java.lang.String",
-			"description": "A description for 'app.mail_sender'"
+			"description": "A description for 'app_mail_sender'"
 		},
 		{
-			"name": "app.mail_recipient",
+			"name": "app_mail_recipient",
 			"type": "java.lang.String",
-			"description": "A description for 'app.mail_recipient'"
+			"description": "A description for 'app_mail_recipient'"
 		}
 	]
 }

@@ -6,13 +6,13 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import com.learn.cursomc.config.ConfigProperties;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Pedido;
 
@@ -23,19 +23,15 @@ public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	@Autowired
-	private ConfigProperties config;
-	
+	@Value("${app_mail_sender}")
 	private String mail_sender;
-	
+		
 	public void sendOrderConfirmationEmail(Pedido obj) {
 		SimpleMailMessage sm = prepareSimpleMailMessageFromPedido(obj);
 		sendEmail(sm);
 	}
 	
 	protected SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido obj) {
-		mail_sender = config.getMailSender();
-		
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
 		sm.setTo(obj.getCliente().getEmail());
@@ -67,8 +63,6 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	protected MimeMessage prepareMimeMessageFromPedido(Pedido obj) throws MessagingException {
-		mail_sender = config.getMailSender();
-		
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
 		
@@ -88,10 +82,7 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass) {
-		mail_sender = config.getMailSender();
-		
 		SimpleMailMessage sm = new SimpleMailMessage();
-		
 		sm.setTo(cliente.getEmail());
 		sm.setFrom(mail_sender);
 		sm.setSubject("Solicitação de nova senha.");

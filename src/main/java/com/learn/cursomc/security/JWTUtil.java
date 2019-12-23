@@ -2,10 +2,9 @@ package com.learn.cursomc.security;
 
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.learn.cursomc.config.ConfigProperties;
 import com.learn.cursomc.utils.Util;
 
 import io.jsonwebtoken.Claims;
@@ -14,22 +13,19 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTUtil {
-	@Autowired
-	private ConfigProperties config;
+	@Value("${app_jwt_secret}")
+	private String app_jwt_secret;
 	
-	private String secret;
-	private Long expiration;
+	@Value("${app_jwt_expiration}")
+	private String app_jwt_expiration;
 	
 	public String generateToken(String username) {
-		secret = config.getJWTSecret();
-		expiration = Long.getLong(config.geJWTExpiration());
-		
 		return Jwts.
-				builder().
-				setSubject(username).
-				setExpiration(new Date(System.currentTimeMillis() + expiration)).
-				signWith(SignatureAlgorithm.HS512, secret.getBytes()).
-				compact();
+			builder().
+			setSubject(username).
+			setExpiration(new Date(System.currentTimeMillis() + Long.valueOf(app_jwt_expiration))).
+			signWith(SignatureAlgorithm.HS512, app_jwt_secret.getBytes()).
+			compact();
 	}
 	
 	public boolean isTokenValido(String token) {
@@ -47,10 +43,8 @@ public class JWTUtil {
 	}
 	
 	private Claims getClaims(String token) {
-		secret = config.getJWTSecret();
-		
 		try {
-			return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody();
+			return Jwts.parser().setSigningKey(app_jwt_secret.getBytes()).parseClaimsJws(token).getBody();
 		}
 		catch(Exception e) {
 			return null;

@@ -1,6 +1,6 @@
 package com.learn.cursomc.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,24 +12,22 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @Configuration
 public class S3Config {
-	@Autowired
-	private ConfigProperties config;
+	@Value("${app_aws_access_key_id}")
+	private String app_aws_access_key_id;
 	
-	private String access_key_id;
-	private String secret_access_key;
-	private String region;
+	@Value("${app_aws_secret_access_key}")
+	private String app_aws_secret_access_key;
+	
+	@Value("${app_s3_region}")
+	private String app_s3_region;
 	
 	@Bean
 	public AmazonS3 s3Client() {
-		access_key_id = config.getAWSAccessKeyId();
-		secret_access_key = config.getAWSSecretAccessKey();
-		region = config.getS3Region();
-		
-		BasicAWSCredentials awsCred = new BasicAWSCredentials(access_key_id, secret_access_key);
+		BasicAWSCredentials awsCred = new BasicAWSCredentials(app_aws_access_key_id, app_aws_secret_access_key);
 		AmazonS3 s3Client = 
 				AmazonS3ClientBuilder.
 				standard().
-				withRegion(Regions.fromName(region)).
+				withRegion(Regions.fromName(app_s3_region)).
 				withCredentials(new AWSStaticCredentialsProvider(awsCred)).
 				build();
 		
