@@ -1,5 +1,6 @@
 package com.learn.cursomc.services;
 
+import java.io.IOException;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class AuthService {
 	
 	private Random random = new Random();
 	
-	public void sendNewPassword(String email) {
+	public void sendNewPassword(String email) throws IOException {
 		Cliente cliente = clienteRepository.findByEmail(email);
 		if (Util.isNull(cliente)) {
 			throw new ObjectNotFoundException("Email não encontrado.");

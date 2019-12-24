@@ -1,5 +1,6 @@
 package com.learn.cursomc.resources;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -89,7 +90,7 @@ public class ClienteResource {
 	}
 	
 	@RequestMapping(value="/picture", method=RequestMethod.POST)
-	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name="file") MultipartFile file) {
+	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name="file") MultipartFile file) throws IOException {
 		URI uri = clienteService.uploadProfilePicture(file);
 		return ResponseEntity.created(uri).build();
 	}

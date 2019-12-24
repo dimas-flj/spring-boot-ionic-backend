@@ -1,5 +1,6 @@
 package com.learn.cursomc.resources;
 
+import java.io.IOException;
 import java.net.URI;
 
 import javax.validation.Valid;
@@ -31,7 +32,7 @@ public class PedidoResource {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody Pedido obj) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody Pedido obj) throws IOException {
 		obj = cs.insert(obj);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();

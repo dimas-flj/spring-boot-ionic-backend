@@ -1,10 +1,12 @@
 package com.learn.cursomc.security;
 
+import java.io.IOException;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.learn.cursomc.config.ConfigProperties;
 import com.learn.cursomc.utils.Util;
 
 import io.jsonwebtoken.Claims;
@@ -13,13 +15,20 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTUtil {
-	@Value("${app_jwt_secret}")
-	private String app_jwt_secret;
+	@Autowired
+	private ConfigProperties prop;
 	
-	@Value("${app_jwt_expiration}")
+	private String app_jwt_secret;
 	private String app_jwt_expiration;
 	
-	public String generateToken(String username) {
+	private void init() throws IOException {
+		app_jwt_secret = prop.getAppJWTSecret();
+		app_jwt_expiration = prop.getAppJWTExpiration();
+	}
+	
+	public String generateToken(String username) throws IOException {
+		init();
+		
 		return Jwts.
 			builder().
 			setSubject(username).
@@ -28,7 +37,7 @@ public class JWTUtil {
 			compact();
 	}
 	
-	public boolean isTokenValido(String token) {
+	public boolean isTokenValido(String token) throws IOException {
 		Claims claims = getClaims(token);
 		if (!Util.isNull(claims)) {
 			String username = claims.getSubject();
@@ -42,7 +51,9 @@ public class JWTUtil {
 		return false;
 	}
 	
-	private Claims getClaims(String token) {
+	private Claims getClaims(String token) throws IOException {
+		init();
+		
 		try {
 			return Jwts.parser().setSigningKey(app_jwt_secret.getBytes()).parseClaimsJws(token).getBody();
 		}
@@ -51,7 +62,7 @@ public class JWTUtil {
 		}
 	}
 
-	public String getUserName(String token) {
+	public String getUserName(String token) throws IOException {
 		Claims claims = getClaims(token);
 		if (!Util.isNull(claims)) {
 			String username = claims.getSubject();

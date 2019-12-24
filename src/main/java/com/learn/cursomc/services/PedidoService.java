@@ -1,5 +1,6 @@
 package com.learn.cursomc.services;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
 
@@ -52,7 +53,7 @@ public class PedidoService {
 		return cat.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! id: " + id_busca + ", Tipo: " + Pedido.class.getName()));
 	}
 	
-	public Pedido insert(Pedido obj) {
+	public Pedido insert(Pedido obj) throws IOException {
 		obj.setId(null);
 		obj.setInstante(new Date());
 		obj.setCliente(clienteService.find(obj.getCliente().getId()));
@@ -73,8 +74,6 @@ public class PedidoService {
 		}
 		
 		itemPedidoRepository.saveAll(obj.getItens());
-		
-		System.out.println(obj);
 		
 		emailService.sendOrderConfirmationHtmlEmail(obj);
 		

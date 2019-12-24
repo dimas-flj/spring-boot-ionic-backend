@@ -1,21 +1,24 @@
 package com.learn.cursomc.services;
 
+import java.io.IOException;
 import java.util.Date;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import com.learn.cursomc.config.ConfigProperties;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Pedido;
 
+@Service
 public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private TemplateEngine templateEngine;
@@ -23,15 +26,19 @@ public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	@Value("${app_mail_sender}")
+	@Autowired
+	private ConfigProperties prop;
+	
 	private String mail_sender;
-		
-	public void sendOrderConfirmationEmail(Pedido obj) {
+	
+	public void sendOrderConfirmationEmail(Pedido obj) throws IOException {
 		SimpleMailMessage sm = prepareSimpleMailMessageFromPedido(obj);
 		sendEmail(sm);
 	}
 	
-	protected SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido obj) {
+	protected SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido obj) throws IOException {
+		mail_sender = prop.getAppMailSender();
+		
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
 		sm.setTo(obj.getCliente().getEmail());
@@ -50,19 +57,22 @@ public abstract class AbstractEmailService implements EmailService {
 		return templateEngine.process("email/confirmacaoPedido", context);
 	}
 	
-	public void sendOrderConfirmationHtmlEmail(Pedido obj) {
+	public void sendOrderConfirmationHtmlEmail(Pedido obj) throws IOException {
+		mail_sender = prop.getAppMailSender();
 		try {
 			MimeMessage mm = prepareMimeMessageFromPedido(obj);
 			sendHtmlEmail(mm);
 		}
-		catch(MessagingException e) {
+		catch(MessagingException | IOException e) {
 			e.printStackTrace();
 			
 			sendOrderConfirmationEmail(obj);
 		}
 	}
 	
-	protected MimeMessage prepareMimeMessageFromPedido(Pedido obj) throws MessagingException {
+	protected MimeMessage prepareMimeMessageFromPedido(Pedido obj) throws MessagingException, IOException {
+		mail_sender = prop.getAppMailSender();
+		
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
 		
@@ -75,13 +85,15 @@ public abstract class AbstractEmailService implements EmailService {
 		return mimeMessage;
 	}
 	
-	public void sendNewPasswordEmail(Cliente cliente, String newPass) {
+	public void sendNewPasswordEmail(Cliente cliente, String newPass) throws IOException {
 		SimpleMailMessage sm = prepareNewPasswordEmail(cliente, newPass);
 		sendEmail(sm);
 		
 	}
 	
-	protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass) {
+	protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass) throws IOException {
+		mail_sender = prop.getAppMailSender();
+		
 		SimpleMailMessage sm = new SimpleMailMessage();
 		sm.setTo(cliente.getEmail());
 		sm.setFrom(mail_sender);

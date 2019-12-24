@@ -40,7 +40,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 		chain.doFilter(request, response);
 	}
 	
-	private UsernamePasswordAuthenticationToken getAuthentication(String token) {
+	private UsernamePasswordAuthenticationToken getAuthentication(String token) throws IOException {
 		if (jwtUtil.isTokenValido(token)) {
 			String username = jwtUtil.getUserName(token);
 			UserDetails user = userDetailsService.loadUserByUsername(username);
