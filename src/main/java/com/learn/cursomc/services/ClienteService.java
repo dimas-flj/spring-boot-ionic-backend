@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.learn.cursomc.config.ConfigProperties;
 import com.learn.cursomc.domain.Cidade;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Endereco;
@@ -49,13 +48,8 @@ public class ClienteService {
 	@Autowired
 	private ImageService imageService;
 	
-	private String app_img_prefix_client_profile;
-	private String app_img_profile_size;
-	
-	public ClienteService() {
-		app_img_prefix_client_profile = ConfigProperties.getInstance().getValue(app_img_prefix_client_profile, "app_img_prefix_client_profile");
-		app_img_profile_size = ConfigProperties.getInstance().getValue(app_img_profile_size, "app_img_profile_size");
-	}
+	private String app_img_prefix_client_profile = "cp";
+	private String app_img_profile_size = "200";
 	
 	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {
 		UserSS user = UserService.authenticated();

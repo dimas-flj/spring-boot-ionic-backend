@@ -13,15 +13,9 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @Configuration
 public class S3Config {
-	private String app_aws_access_key_id;
-	private String app_aws_secret_access_key;
-	private String app_s3_region;
-	
-	public S3Config() {
-		app_aws_access_key_id = ConfigProperties.getInstance().getValue(app_aws_access_key_id, "app_aws_access_key_id");
-		app_aws_secret_access_key = ConfigProperties.getInstance().getValue(app_aws_secret_access_key, "app_aws_secret_access_key");
-		app_s3_region = ConfigProperties.getInstance().getValue(app_s3_region, "app_s3_region");
-	}
+	private String app_aws_access_key_id = "AKIAZF2LVPEKETAKWLHH";
+	private String app_aws_secret_access_key = "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";
+	private String app_s3_region = "sa-east-1";
 	
 	@Bean
 	public AmazonS3 s3Client() throws IOException {
