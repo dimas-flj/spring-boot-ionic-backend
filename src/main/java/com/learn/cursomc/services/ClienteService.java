@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.learn.cursomc.config.ConfigProperties;
 import com.learn.cursomc.domain.Cidade;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Endereco;
@@ -50,18 +49,11 @@ public class ClienteService {
 	@Autowired
 	private ImageService imageService;
 	
-	private ConfigProperties prop = ConfigProperties.getInstance();
-	
 	@Value("${app_img_prefix_client_profile}")
 	private String app_img_prefix_client_profile;
 	
 	@Value("${app_img_profile_size}")
 	private String app_img_profile_size;
-	
-	private void init() throws IOException {
-		app_img_prefix_client_profile = prop.getValue(app_img_prefix_client_profile, "app_img_prefix_client_profile");
-		app_img_profile_size = prop.getValue(app_img_profile_size, "app_img_profile_size");
-	}
 	
 	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {
 		UserSS user = UserService.authenticated();
@@ -149,8 +141,6 @@ public class ClienteService {
 	}
 	
 	public URI uploadProfilePicture(MultipartFile multipartFile) throws IOException {
-		init();
-		
 		UserSS user = UserService.authenticated();
 		if (Util.isNull(user)) {
 			throw new AuthorizationException("Acesso negado.");

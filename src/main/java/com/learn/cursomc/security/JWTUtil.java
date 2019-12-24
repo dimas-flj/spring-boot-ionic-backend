@@ -6,7 +6,6 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.learn.cursomc.config.ConfigProperties;
 import com.learn.cursomc.utils.Util;
 
 import io.jsonwebtoken.Claims;
@@ -14,23 +13,14 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
-public class JWTUtil {
-	private ConfigProperties prop = ConfigProperties.getInstance();
-	
+public class JWTUtil {	
 	@Value("${app_jwt_secret}")
 	private String app_jwt_secret;
 	
 	@Value("${app_jwt_expiration}")
 	private String app_jwt_expiration;
 	
-	private void init() throws IOException {
-		app_jwt_secret = prop.getValue(app_jwt_secret, "app_jwt_secret");
-		app_jwt_expiration = prop.getValue(app_jwt_expiration, "app_jwt_expiration");
-	}
-	
 	public String generateToken(String username) throws IOException {
-		init();
-		
 		return Jwts.
 			builder().
 			setSubject(username).
@@ -54,8 +44,6 @@ public class JWTUtil {
 	}
 	
 	private Claims getClaims(String token) throws IOException {
-		init();
-		
 		try {
 			return Jwts.parser().setSigningKey(app_jwt_secret.getBytes()).parseClaimsJws(token).getBody();
 		}

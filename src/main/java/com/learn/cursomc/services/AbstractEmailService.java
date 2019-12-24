@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import com.learn.cursomc.config.ConfigProperties;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Pedido;
 
@@ -27,14 +26,8 @@ public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	private ConfigProperties prop = ConfigProperties.getInstance();
-	
 	@Value("${app_mail_sender}")
 	private String app_mail_sender;
-	
-	private void init() throws IOException {
-		app_mail_sender = prop.getValue(app_mail_sender, "app_mail_sender");
-	}
 	
 	public void sendOrderConfirmationEmail(Pedido obj) throws IOException {
 		SimpleMailMessage sm = prepareSimpleMailMessageFromPedido(obj);
@@ -42,8 +35,6 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	protected SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido obj) throws IOException {
-		init();
-		
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
 		sm.setTo(obj.getCliente().getEmail());
@@ -63,8 +54,6 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	public void sendOrderConfirmationHtmlEmail(Pedido obj) throws IOException {
-		init();
-		
 		try {
 			MimeMessage mm = prepareMimeMessageFromPedido(obj);
 			sendHtmlEmail(mm);
@@ -77,8 +66,6 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	protected MimeMessage prepareMimeMessageFromPedido(Pedido obj) throws MessagingException, IOException {
-		init();
-		
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
 		
@@ -94,12 +81,9 @@ public abstract class AbstractEmailService implements EmailService {
 	public void sendNewPasswordEmail(Cliente cliente, String newPass) throws IOException {
 		SimpleMailMessage sm = prepareNewPasswordEmail(cliente, newPass);
 		sendEmail(sm);
-		
 	}
 	
 	protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass) throws IOException {
-		init();
-		
 		SimpleMailMessage sm = new SimpleMailMessage();
 		sm.setTo(cliente.getEmail());
 		sm.setFrom(app_mail_sender);
