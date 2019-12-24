@@ -9,7 +9,6 @@ import java.net.URISyntaxException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +17,7 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.learn.cursomc.config.ConfigProperties;
 import com.learn.cursomc.services.exceptions.FileException;
 
 @Service
@@ -27,8 +27,11 @@ public class S3Service {
 	@Autowired
 	private AmazonS3 s3Client;
 	
-	@Value("${app_s3_bucket}")
 	private String app_s3_bucket;
+	
+	public S3Service() {
+		app_s3_bucket = ConfigProperties.getInstance().getValue(app_s3_bucket, "app_s3_bucket");
+	}
 	
 	// Método de Teste de upload sem endpoint
 	public void uploadFile(String localFilePath) throws IOException {

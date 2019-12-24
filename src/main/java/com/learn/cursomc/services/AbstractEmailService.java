@@ -7,7 +7,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import com.learn.cursomc.config.ConfigProperties;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Pedido;
 
@@ -26,8 +26,11 @@ public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	@Value("${app_mail_sender}")
 	private String app_mail_sender;
+	
+	public AbstractEmailService() {
+		app_mail_sender = ConfigProperties.getInstance().getValue(app_mail_sender, "app_mail_sender");;
+	}
 	
 	public void sendOrderConfirmationEmail(Pedido obj) throws IOException {
 		SimpleMailMessage sm = prepareSimpleMailMessageFromPedido(obj);
