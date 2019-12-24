@@ -26,6 +26,8 @@ public class S3Config {
 	private String app_s3_region;
 	
 	private void init() throws IOException {
+		System.out.println("app_aws_access_key_id = " + app_aws_access_key_id);
+		
 		app_aws_access_key_id = prop.getValue(app_aws_access_key_id, "app_aws_access_key_id");
 		app_aws_secret_access_key = prop.getValue(app_aws_secret_access_key, "app_aws_secret_access_key");
 		app_s3_region = prop.getValue(app_s3_region, "app_s3_region");
