@@ -7,6 +7,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -26,10 +27,14 @@ public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	@Autowired
-	private ConfigProperties prop;
+	private ConfigProperties prop = ConfigProperties.getInstance();
 	
-	private String mail_sender;
+	@Value("${app_mail_sender}")
+	private String app_mail_sender;
+	
+	private void init() throws IOException {
+		app_mail_sender = prop.getValue(app_mail_sender, "app_mail_sender");
+	}
 	
 	public void sendOrderConfirmationEmail(Pedido obj) throws IOException {
 		SimpleMailMessage sm = prepareSimpleMailMessageFromPedido(obj);
@@ -37,12 +42,12 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	protected SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido obj) throws IOException {
-		mail_sender = prop.getAppMailSender();
+		init();
 		
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
 		sm.setTo(obj.getCliente().getEmail());
-		sm.setFrom(mail_sender);
+		sm.setFrom(app_mail_sender);
 		sm.setSubject("Pedido confirmado: Código(" + obj.getId() + ")");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText(obj.toString());
@@ -58,7 +63,8 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	public void sendOrderConfirmationHtmlEmail(Pedido obj) throws IOException {
-		mail_sender = prop.getAppMailSender();
+		init();
+		
 		try {
 			MimeMessage mm = prepareMimeMessageFromPedido(obj);
 			sendHtmlEmail(mm);
@@ -71,13 +77,13 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	protected MimeMessage prepareMimeMessageFromPedido(Pedido obj) throws MessagingException, IOException {
-		mail_sender = prop.getAppMailSender();
+		init();
 		
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
 		
 		mmh.setTo(obj.getCliente().getEmail());
-		mmh.setFrom(mail_sender);
+		mmh.setFrom(app_mail_sender);
 		mmh.setSubject("Pedido confirmado: Código(" + obj.getId() + ")");
 		mmh.setSentDate(new Date(System.currentTimeMillis()));
 		mmh.setText(htmlFromTemplatePedido(obj), true);
@@ -92,11 +98,11 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass) throws IOException {
-		mail_sender = prop.getAppMailSender();
+		init();
 		
 		SimpleMailMessage sm = new SimpleMailMessage();
 		sm.setTo(cliente.getEmail());
-		sm.setFrom(mail_sender);
+		sm.setFrom(app_mail_sender);
 		sm.setSubject("Solicitação de nova senha.");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText("Nova senha: " + newPass);

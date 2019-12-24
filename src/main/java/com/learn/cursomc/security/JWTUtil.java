@@ -3,7 +3,7 @@ package com.learn.cursomc.security;
 import java.io.IOException;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.learn.cursomc.config.ConfigProperties;
@@ -15,15 +15,17 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTUtil {
-	@Autowired
-	private ConfigProperties prop;
+	private ConfigProperties prop = ConfigProperties.getInstance();
 	
+	@Value("${app_jwt_secret}")
 	private String app_jwt_secret;
+	
+	@Value("${app_jwt_expiration}")
 	private String app_jwt_expiration;
 	
 	private void init() throws IOException {
-		app_jwt_secret = prop.getAppJWTSecret();
-		app_jwt_expiration = prop.getAppJWTExpiration();
+		app_jwt_secret = prop.getValue(app_jwt_secret, "app_jwt_secret");
+		app_jwt_expiration = prop.getValue(app_jwt_expiration, "app_jwt_expiration");
 	}
 	
 	public String generateToken(String username) throws IOException {

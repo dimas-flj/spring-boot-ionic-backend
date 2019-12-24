@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,18 +28,23 @@ public class S3Service {
 	@Autowired
 	private AmazonS3 s3Client;
 	
-	@Autowired
-	private ConfigProperties prop;
+	private ConfigProperties prop = ConfigProperties.getInstance();
 	
-	private String bucket_name;
+	@Value("${app_s3_bucket}")
+	private String app_s3_bucket;
+	
+	private void init() throws IOException {
+		app_s3_bucket = prop.getValue(app_s3_bucket, "app_s3_bucket");
+	}
 	
 	// Método de Teste de upload sem endpoint
 	public void uploadFile(String localFilePath) throws IOException {
-		bucket_name = prop.getAppS3Bucket();
+		init();
+		
 		try {
 			File file = new File(localFilePath);
 			LOG.info("Iniciando upload.");
-			s3Client.putObject(new PutObjectRequest(bucket_name, "capturar.jpg", file));
+			s3Client.putObject(new PutObjectRequest(app_s3_bucket, "capturar.jpg", file));
 			LOG.info("Upload finalizado.");
 		}
 		catch(AmazonServiceException e) {
@@ -65,16 +71,17 @@ public class S3Service {
 	}
 	
 	public URI uploadFile(InputStream is, String fileName, String contentType) throws IOException {
-		bucket_name = prop.getAppS3Bucket();
+		init();
+		
 		try {
 			ObjectMetadata meta = new ObjectMetadata();
 			meta.setContentType(contentType);
 			
 			LOG.info("Iniciando upload.");
-			s3Client.putObject(bucket_name, fileName, is, meta);
+			s3Client.putObject(app_s3_bucket, fileName, is, meta);
 			LOG.info("Upload finalizado.");
 			
-			return s3Client.getUrl(bucket_name, fileName).toURI();
+			return s3Client.getUrl(app_s3_bucket, fileName).toURI();
 		}
 		catch(URISyntaxException e) {
 			throw new FileException("Erro ao converter URL pata URI.");

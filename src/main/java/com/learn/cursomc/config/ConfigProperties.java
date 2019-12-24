@@ -6,49 +6,29 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import com.learn.cursomc.utils.Util;
 
-@Configuration
 public class ConfigProperties {
 	private static final Logger log = LoggerFactory.getLogger(ConfigProperties.class);
-	
 	private static Properties prop;
 	
-	@Value("${app_mail_sender}")
-	private String app_mail_sender;
+	private static ConfigProperties config;
 	
-	@Value("${app_mail_recipient}")
-	private String app_mail_recipient;
+	public static ConfigProperties getInstance() {
+		try {
+			if (Util.isNull(config)) {
+				config = new ConfigProperties();
+			}
+		}
+		catch(IOException e) {
+			log.error("Erro ao abrir arquivo de configuração.", e);
+		}
+		return config;
+	}
 	
-	@Value("${app_jwt_secret}")
-	private String app_jwt_secret;
-	
-	@Value("${app_jwt_expiration}")
-	private String app_jwt_expiration;
-	
-	@Value("${app_aws_access_key_id}")
-	private String app_aws_access_key_id;
-	
-	@Value("${app_aws_secret_access_key}")
-	private String app_aws_secret_access_key;
-	
-	@Value("${app_s3_bucket}")
-	private String app_s3_bucket;
-	
-	@Value("${app_s3_region}")
-	private String app_s3_region;
-	
-	@Value("${app_img_prefix_client_profile}")
-	private String app_img_prefix_client_profile;
-	
-	@Value("${app_img_profile_size}")
-	private String app_img_profile_size;
-	
-	public ConfigProperties() throws IOException {
+	private ConfigProperties() throws IOException {
 		if (Util.isNull(prop)) {
 			try {
 				prop = new Properties();
@@ -63,59 +43,10 @@ public class ConfigProperties {
 	}
 	
 	@Bean
-	public String getAppMailSender() throws IOException {
-		return getValue(app_mail_sender, "app_mail_sender", "dimasflj@gmail.com");
-	}
-	
-	@Bean
-	public String getAppMailRecipient() throws IOException {
-		return getValue(app_mail_recipient, "app_mail_recipient", "dimasflj@gmail.com");
-	}
-	
-	@Bean
-	public String getAppJWTSecret() throws IOException {
-		return getValue(app_jwt_secret, "app_jwt_secret", "AssinaturarDoTokenParaAutenticacaoEmProducao");
-	}
-	
-	@Bean
-	public String getAppJWTExpiration() throws IOException {
-		return getValue(app_jwt_expiration, "app_jwt_expiration", "86400000");
-	}
-	
-	@Bean
-	public String getAppAWSAccessKeyId() throws IOException {
-		return getValue(app_aws_access_key_id, "app_aws_access_key_id", "AKIAZF2LVPEKETAKWLHH");
-	}
-	
-	@Bean
-	public String getAppAWSSecretAccessKey() throws IOException {
-		return getValue(app_aws_secret_access_key, "app_aws_secret_access_key", "tSB40jC6awtPcNqNWKZKAzLkRAyJdHp5ZNi2F/UZ");
-	}
-	
-	@Bean
-	public String getAppS3Bucket() throws IOException {
-		return getValue(app_s3_bucket, "app_s3_bucket", "curso-spring-ionic-dimas");
-	}
-	
-	@Bean
-	public String getAppS3Region() throws IOException {
-		return getValue(app_s3_region, "app_s3_region", "sa-east-1");
-	}
-	
-	@Bean
-	public String getAppImgPrefixClientProfile() throws IOException {
-		return getValue(app_img_prefix_client_profile, "app_img_prefix_client_profile", "cp");
-	}
-	
-	@Bean
-	public String getAppImgProfileSize() throws IOException {
-		return getValue(app_img_profile_size, "app_img_profile_size", "200");
-	}
-	
-	private String getValue(String sWiredValue, String nm_prop, String defaulValue) {
+	public String getValue(String sWiredValue, String nm_prop) {
 		String sOutValue = sWiredValue;
 		if (!Util.isValidString(sWiredValue)) {
-			sOutValue = prop.getProperty(nm_prop, defaulValue);
+			sOutValue = prop.getProperty(nm_prop);
 			log.info("Obtendo propriedade do arquivo de propriedades - nome(" + nm_prop + ") - valor(" + sOutValue + ")");
 		}
 		else {
