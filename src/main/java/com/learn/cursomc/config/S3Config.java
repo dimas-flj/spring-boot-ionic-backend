@@ -14,8 +14,6 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @Configuration
 public class S3Config {
-	private ConfigProperties prop = ConfigProperties.getInstance();
-	
 	@Value("${app_aws_access_key_id}")
 	private String app_aws_access_key_id;
 	
@@ -25,18 +23,8 @@ public class S3Config {
 	@Value("${app_s3_region}")
 	private String app_s3_region;
 	
-	private void init() throws IOException {
-		System.out.println("app_aws_access_key_id = " + app_aws_access_key_id);
-		
-		app_aws_access_key_id = prop.getValue(app_aws_access_key_id, "app_aws_access_key_id");
-		app_aws_secret_access_key = prop.getValue(app_aws_secret_access_key, "app_aws_secret_access_key");
-		app_s3_region = prop.getValue(app_s3_region, "app_s3_region");
-	}
-	
 	@Bean
 	public AmazonS3 s3Client() throws IOException {
-		init();
-		
 		BasicAWSCredentials awsCred = new BasicAWSCredentials(app_aws_access_key_id, app_aws_secret_access_key);
 		AmazonS3 s3Client = 
 				AmazonS3ClientBuilder.
