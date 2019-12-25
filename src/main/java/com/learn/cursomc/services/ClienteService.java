@@ -49,8 +49,15 @@ public class ClienteService {
 	@Autowired
 	private ImageService imageService;
 	
-	private String app_img_prefix_client_profile = ConfigProperties.getInstance().getValue("", "app_img_prefix_client_profile");
-	private String app_img_profile_size = ConfigProperties.getInstance().getValue("", "app_img_profile_size");
+	private String app_img_prefix_client_profile;
+	private String app_img_profile_size;
+	
+	public ClienteService() {
+		super();
+		
+		app_img_prefix_client_profile = ConfigProperties.getInstance().getValue("", "app_img_prefix_client_profile");
+		app_img_profile_size = ConfigProperties.getInstance().getValue("", "app_img_profile_size");
+	}
 	
 	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {
 		UserSS user = UserService.authenticated();

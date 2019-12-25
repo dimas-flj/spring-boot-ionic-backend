@@ -27,7 +27,13 @@ public class S3Service {
 	@Autowired
 	private AmazonS3 s3Client;
 	
-	private String app_s3_bucket = ConfigProperties.getInstance().getValue("", "app_s3_bucket");
+	private String app_s3_bucket;
+	
+	public S3Service() {
+		super();
+		
+		app_s3_bucket = ConfigProperties.getInstance().getValue("", "app_s3_bucket");
+	}
 	
 	// Método de Teste de upload sem endpoint
 	public void uploadFile(String localFilePath) throws IOException {

@@ -14,8 +14,15 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTUtil {
-	private String app_jwt_secret = ConfigProperties.getInstance().getValue("", "app_jwt_secret");
-	private String app_jwt_expiration = ConfigProperties.getInstance().getValue("", "app_jwt_expiration");
+	private String app_jwt_secret;
+	private String app_jwt_expiration;
+	
+	public JWTUtil() {
+		super();
+		
+		app_jwt_secret = ConfigProperties.getInstance().getValue("", "app_jwt_secret");
+		app_jwt_expiration = ConfigProperties.getInstance().getValue("", "app_jwt_expiration");
+	}
 	
 	public String generateToken(String username) throws IOException {
 		return Jwts.

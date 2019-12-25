@@ -26,8 +26,14 @@ public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	private String app_mail_sender = ConfigProperties.getInstance().getValue("", "app_mail_sender");
-	private String app_mail_recipient = ConfigProperties.getInstance().getValue("", "app_mail_recipient");
+	private String app_mail_sender;
+	private String app_mail_recipient;
+	
+	public AbstractEmailService() {
+		super();
+		app_mail_sender = ConfigProperties.getInstance().getValue("", "app_mail_sender");
+		app_mail_recipient = ConfigProperties.getInstance().getValue("", "app_mail_recipient");
+	}
 	
 	public void sendEmailTeste() {
 		SimpleMailMessage sm = new SimpleMailMessage();
