@@ -7,7 +7,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import com.learn.cursomc.config.ConfigProperties;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Pedido;
 
@@ -26,16 +26,14 @@ public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-//	private String app_mail_sender = "dimasflj@gmail.com";
-	
-	@Value("${app_mail_sender}")
-	private String app_mail_sender;
+	private String app_mail_sender = ConfigProperties.getInstance().getValue("", "app_mail_sender");
+	private String app_mail_recipient = ConfigProperties.getInstance().getValue("", "app_mail_recipient");
 	
 	public void sendEmailTeste() {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
-		sm.setTo("dimas_f@hotmail.com");
-		sm.setFrom("dimasflj@gmail.com");
+		sm.setTo(app_mail_recipient);
+		sm.setFrom(app_mail_sender);
 		sm.setSubject("Teste de envio de email via endpoint");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText("Envio de email somente a titulo de teste.");

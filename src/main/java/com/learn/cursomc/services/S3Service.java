@@ -17,6 +17,7 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.learn.cursomc.config.ConfigProperties;
 import com.learn.cursomc.services.exceptions.FileException;
 
 @Service
@@ -26,7 +27,7 @@ public class S3Service {
 	@Autowired
 	private AmazonS3 s3Client;
 	
-	private String app_s3_bucket = "curso-spring-ionic-dimas";
+	private String app_s3_bucket = ConfigProperties.getInstance().getValue("", "app_s3_bucket");
 	
 	// Método de Teste de upload sem endpoint
 	public void uploadFile(String localFilePath) throws IOException {
