@@ -15,6 +15,7 @@ public interface EmailService {
 	// VERSAO TEXTO PLANO ::::::::::::
 	void sendOrderConfirmationEmail(Pedido obj) throws IOException;
 	void sendEmail(SimpleMailMessage msg);
+	void sendEmailTeste();
 	// VERSAO TEXTO PLANO ::::::::::::
 	
 	// VERSAO HTML ::::::::::::

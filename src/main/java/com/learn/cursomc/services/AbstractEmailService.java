@@ -7,6 +7,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -25,7 +26,22 @@ public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	private String app_mail_sender = "dimasflj@gmail.com";
+//	private String app_mail_sender = "dimasflj@gmail.com";
+	
+	@Value("${app_mail_sender}")
+	private String app_mail_sender;
+	
+	public void sendEmailTeste() {
+		SimpleMailMessage sm = new SimpleMailMessage();
+		
+		sm.setTo("dimas_f@hotmail.com");
+		sm.setFrom("dimasflj@gmail.com");
+		sm.setSubject("Teste de envio de email via endpoint");
+		sm.setSentDate(new Date(System.currentTimeMillis()));
+		sm.setText("Envio de email somente a titulo de teste.");
+		
+		sendEmail(sm);
+	}
 	
 	public void sendOrderConfirmationEmail(Pedido obj) throws IOException {
 		SimpleMailMessage sm = prepareSimpleMailMessageFromPedido(obj);
