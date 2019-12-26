@@ -5,7 +5,6 @@ import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
-import com.learn.cursomc.CursomcApplication;
 import com.learn.cursomc.config.GlobalProperties;
 import com.learn.cursomc.utils.Util;
 
@@ -15,10 +14,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTUtil {
-	public JWTUtil() throws IOException {
-		GlobalProperties.init(CursomcApplication.ACTIVE_PROFILE);
-	}
-	
 	public String generateToken(String username) throws IOException {
 		return Jwts.
 			builder().

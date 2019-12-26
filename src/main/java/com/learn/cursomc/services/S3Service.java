@@ -17,7 +17,6 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.learn.cursomc.CursomcApplication;
 import com.learn.cursomc.config.GlobalProperties;
 import com.learn.cursomc.services.exceptions.FileException;
 
@@ -27,10 +26,6 @@ public class S3Service {
 	
 	@Autowired
 	private AmazonS3 s3Client;
-	
-	public S3Service() throws IOException {
-		GlobalProperties.init(CursomcApplication.ACTIVE_PROFILE);
-	}
 	
 	// Método de Teste de upload sem endpoint
 	public void uploadFile(String localFilePath) throws IOException {

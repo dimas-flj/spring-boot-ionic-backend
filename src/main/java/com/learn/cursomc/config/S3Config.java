@@ -10,14 +10,9 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.learn.cursomc.CursomcApplication;
 
 @Configuration
 public class S3Config {
-	public S3Config() throws IOException {
-		GlobalProperties.init(CursomcApplication.ACTIVE_PROFILE);
-	}
-	
 	@Bean
 	public AmazonS3 s3Client() throws IOException {
 		BasicAWSCredentials awsCred = new BasicAWSCredentials(GlobalProperties.getAwsAccessKeyId(), GlobalProperties.getAwsSecretAccessKey());
