@@ -14,12 +14,14 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTUtil {
+	private static GlobalProperties prop = new GlobalProperties();
+	
 	public String generateToken(String username) throws IOException {
 		return Jwts.
 			builder().
 			setSubject(username).
-			setExpiration(new Date(System.currentTimeMillis() + Long.getLong(GlobalProperties.getJwtExpiration()))).
-			signWith(SignatureAlgorithm.HS512, GlobalProperties.getJwtSecret().getBytes()).
+			setExpiration(new Date(System.currentTimeMillis() + Long.getLong(prop.getJwtExpiration()))).
+			signWith(SignatureAlgorithm.HS512, prop.getJwtSecret().getBytes()).
 			compact();
 	}
 	
@@ -39,7 +41,7 @@ public class JWTUtil {
 	
 	private Claims getClaims(String token) throws IOException {
 		try {
-			return Jwts.parser().setSigningKey(GlobalProperties.getJwtSecret().getBytes()).parseClaimsJws(token).getBody();
+			return Jwts.parser().setSigningKey(prop.getJwtSecret().getBytes()).parseClaimsJws(token).getBody();
 		}
 		catch(Exception e) {
 			return null;

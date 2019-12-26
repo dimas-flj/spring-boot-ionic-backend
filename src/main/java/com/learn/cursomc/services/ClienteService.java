@@ -49,6 +49,8 @@ public class ClienteService {
 	@Autowired
 	private ImageService imageService;
 	
+	private static GlobalProperties prop = new GlobalProperties();
+	
 	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {
 		UserSS user = UserService.authenticated();
 		if (Util.isNull(user) || (!user.hasRole(Perfil.ADMIN) && !id_busca.equals(user.getId()))) {
@@ -142,9 +144,9 @@ public class ClienteService {
 		
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
 		jpgImage = imageService.cropSquare(jpgImage);
-		jpgImage = imageService.resize(jpgImage, Integer.parseInt(GlobalProperties.getImgProfileSize()));
+		jpgImage = imageService.resize(jpgImage, Integer.parseInt(prop.getImgProfileSize()));
 		
-		String fileName = GlobalProperties.getImgPrefixClientProfile() + user.getId() + ".jpg";
+		String fileName = prop.getImgPrefixClientProfile() + user.getId() + ".jpg";
 		
 		return s3Service.uploadFile(imageService.getImageInputStream(jpgImage, "jpg"), fileName, "image");
 	}

@@ -27,12 +27,14 @@ public class S3Service {
 	@Autowired
 	private AmazonS3 s3Client;
 	
+	private static GlobalProperties prop = new GlobalProperties();
+	
 	// Método de Teste de upload sem endpoint
 	public void uploadFile(String localFilePath) throws IOException {
 		try {
 			File file = new File(localFilePath);
 			LOG.info("Iniciando upload.");
-			s3Client.putObject(new PutObjectRequest(GlobalProperties.getS3Bucket(), "capturar.jpg", file));
+			s3Client.putObject(new PutObjectRequest(prop.getS3Bucket(), "capturar.jpg", file));
 			LOG.info("Upload finalizado.");
 		}
 		catch(AmazonServiceException e) {
@@ -64,10 +66,10 @@ public class S3Service {
 			meta.setContentType(contentType);
 			
 			LOG.info("Iniciando upload.");
-			s3Client.putObject(GlobalProperties.getS3Bucket(), fileName, is, meta);
+			s3Client.putObject(prop.getS3Bucket(), fileName, is, meta);
 			LOG.info("Upload finalizado.");
 			
-			return s3Client.getUrl(GlobalProperties.getS3Bucket(), fileName).toURI();
+			return s3Client.getUrl(prop.getS3Bucket(), fileName).toURI();
 		}
 		catch(URISyntaxException e) {
 			throw new FileException("Erro ao converter URL pata URI.");
