@@ -3,9 +3,10 @@ package com.learn.cursomc.security;
 import java.io.IOException;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.learn.cursomc.config.GlobalProperties;
 import com.learn.cursomc.utils.Util;
 
 import io.jsonwebtoken.Claims;
@@ -14,20 +15,15 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTUtil {
-	@Value("${jwt.secret:}")
-	private String jwt_secret;
-	
-	@Value("${jwt.expiration:}")
-	private String jwt_expiration;
+	@Autowired
+	private GlobalProperties prop;
 	
 	public String generateToken(String username) throws IOException {
-		System.out.println("jwt_secret = " + jwt_secret);
-		System.out.println("jwt_expiration = " + jwt_expiration);
 		return Jwts.
 			builder().
 			setSubject(username).
-			setExpiration(new Date(System.currentTimeMillis() + Long.getLong(jwt_expiration))).
-			signWith(SignatureAlgorithm.HS512, jwt_secret.getBytes()).
+			setExpiration(new Date(System.currentTimeMillis() + Long.getLong(prop.getJwtExpiration()))).
+			signWith(SignatureAlgorithm.HS512, prop.getJwtSecret().getBytes()).
 			compact();
 	}
 	
@@ -46,16 +42,14 @@ public class JWTUtil {
 	}
 	
 	private Claims getClaims(String token) throws IOException {
-		System.out.println("jwt_secret = " + jwt_secret);
-		System.out.println("jwt_expiration = " + jwt_expiration);
 		try {
-			return Jwts.parser().setSigningKey(jwt_secret.getBytes()).parseClaimsJws(token).getBody();
+			return Jwts.parser().setSigningKey(prop.getJwtSecret().getBytes()).parseClaimsJws(token).getBody();
 		}
 		catch(Exception e) {
 			return null;
 		}
 	}
-
+	
 	public String getUserName(String token) throws IOException {
 		Claims claims = getClaims(token);
 		if (!Util.isNull(claims)) {

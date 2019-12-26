@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.learn.cursomc.config.GlobalProperties;
 import com.learn.cursomc.domain.Cidade;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Endereco;
@@ -49,11 +49,8 @@ public class ClienteService {
 	@Autowired
 	private ImageService imageService;
 	
-	@Value("${img.prefix.client.profile:}")
-	private String img_prefix_client_profile;
-	
-	@Value("${img.profile.size:}")
-	private String img_profile_size;
+	@Autowired
+	private GlobalProperties prop;
 	
 	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {
 		UserSS user = UserService.authenticated();
@@ -141,8 +138,6 @@ public class ClienteService {
 	}
 	
 	public URI uploadProfilePicture(MultipartFile multipartFile) throws IOException {
-		System.out.println("img_prefix_client_profile = " + img_prefix_client_profile);
-		System.out.println("img_profile_size = " + img_profile_size);
 		UserSS user = UserService.authenticated();
 		if (Util.isNull(user)) {
 			throw new AuthorizationException("Acesso negado.");
@@ -150,9 +145,9 @@ public class ClienteService {
 		
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
 		jpgImage = imageService.cropSquare(jpgImage);
-		jpgImage = imageService.resize(jpgImage, Integer.parseInt(img_profile_size));
+		jpgImage = imageService.resize(jpgImage, Integer.parseInt(prop.getImgProfileSize()));
 		
-		String fileName = img_prefix_client_profile + user.getId() + ".jpg";
+		String fileName = prop.getImgPrefixClientProfile() + user.getId() + ".jpg";
 		
 		return s3Service.uploadFile(imageService.getImageInputStream(jpgImage, "jpg"), fileName, "image");
 	}

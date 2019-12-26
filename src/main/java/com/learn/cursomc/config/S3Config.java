@@ -2,7 +2,7 @@ package com.learn.cursomc.config;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,25 +14,16 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @Configuration
 public class S3Config {
-	@Value("${aws.access_key_id:}")
-	private String aws_access_key_id;
-	
-	@Value("${aws.secret_access_key:}")
-	private String aws_secret_access_key;
-	
-	@Value("${s3.region:}")
-	private String s3_region;
+	@Autowired
+	private GlobalProperties prop; 
 	
 	@Bean
 	public AmazonS3 s3Client() throws IOException {
-		System.out.println("aws_access_key_id = " + aws_access_key_id);
-		System.out.println("aws_secret_access_key = " + aws_secret_access_key);
-		System.out.println("s3_region = " + s3_region);
-		BasicAWSCredentials awsCred = new BasicAWSCredentials(aws_access_key_id, aws_secret_access_key);
+		BasicAWSCredentials awsCred = new BasicAWSCredentials(prop.getAwsAccessKeyId(), prop.getAwsSecretAccessKey());
 		AmazonS3 s3Client = 
 				AmazonS3ClientBuilder.
 				standard().
-				withRegion(Regions.fromName(s3_region)).
+				withRegion(Regions.fromName(prop.getS3Region())).
 				withCredentials(new AWSStaticCredentialsProvider(awsCred)).
 				build();
 		
