@@ -3,9 +3,9 @@ package com.learn.cursomc.security;
 import java.io.IOException;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.learn.cursomc.config.ConfigProperties;
 import com.learn.cursomc.utils.Util;
 
 import io.jsonwebtoken.Claims;
@@ -14,17 +14,22 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTUtil {
+	@Value("${app_jwt_secret}")
 	private String app_jwt_secret;
+	@Value("${app_jwt_expiration}")
 	private String app_jwt_expiration;
 	
-	public JWTUtil() {
-		super();
-		
-		app_jwt_secret = ConfigProperties.getInstance().getValue("", "app_jwt_secret");
-		app_jwt_expiration = ConfigProperties.getInstance().getValue("", "app_jwt_expiration");
-	}
+//	public JWTUtil() {
+//		super();
+//		System.out.println("app_jwt_secret = " + app_jwt_secret);
+//		System.out.println("app_jwt_expiration = " + app_jwt_expiration);
+////		app_jwt_secret = ConfigProperties.getInstance().getValue(app_jwt_secret, "app_jwt_secret");
+////		app_jwt_expiration = ConfigProperties.getInstance().getValue(app_jwt_expiration, "app_jwt_expiration");
+//	}
 	
 	public String generateToken(String username) throws IOException {
+		System.out.println("app_jwt_secret = " + app_jwt_secret);
+		System.out.println("app_jwt_expiration = " + app_jwt_expiration);
 		return Jwts.
 			builder().
 			setSubject(username).

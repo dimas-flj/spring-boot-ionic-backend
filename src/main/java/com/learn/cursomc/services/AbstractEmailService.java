@@ -7,6 +7,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import com.learn.cursomc.config.ConfigProperties;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Pedido;
 
@@ -26,14 +26,19 @@ public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
+	@Value("${app_mail_sender}")
 	private String app_mail_sender;
+	@Value("${app_mail_recipient}")
 	private String app_mail_recipient;
 	
-	public AbstractEmailService() {
-		super();
-		app_mail_sender = ConfigProperties.getInstance().getValue("", "app_mail_sender");
-		app_mail_recipient = ConfigProperties.getInstance().getValue("", "app_mail_recipient");
-	}
+//	public AbstractEmailService() {
+//		super();
+//		
+//		System.out.println("app_mail_sender = " + app_mail_sender);
+//		System.out.println("app_mail_recipient = " + app_mail_recipient);
+////		app_mail_sender = ConfigProperties.getInstance().getValue(app_mail_sender, "app_mail_sender");
+////		app_mail_recipient = ConfigProperties.getInstance().getValue(app_mail_recipient, "app_mail_recipient");
+//	}
 	
 	public void sendEmailTeste() {
 		SimpleMailMessage sm = new SimpleMailMessage();
@@ -53,6 +58,9 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	protected SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido obj) throws IOException {
+		
+		System.out.println("app_mail_sender = " + app_mail_sender);
+		System.out.println("app_mail_recipient = " + app_mail_recipient);
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
 		sm.setTo(obj.getCliente().getEmail());
@@ -84,6 +92,9 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	protected MimeMessage prepareMimeMessageFromPedido(Pedido obj) throws MessagingException, IOException {
+		
+		System.out.println("app_mail_sender = " + app_mail_sender);
+		System.out.println("app_mail_recipient = " + app_mail_recipient);
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
 		
