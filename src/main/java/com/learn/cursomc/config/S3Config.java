@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -14,15 +13,14 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @Configuration
-@PropertySource(value={"classpath:application.properties"})
 public class S3Config {
-	@Value("${aws.access_key_id}")
+	@Value("${aws.access_key_id:}")
 	private String aws_access_key_id;
 	
-	@Value("${aws.secret_access_key}")
+	@Value("${aws.secret_access_key:}")
 	private String aws_secret_access_key;
 	
-	@Value("${s3.region}")
+	@Value("${s3.region:}")
 	private String s3_region;
 	
 	@Bean

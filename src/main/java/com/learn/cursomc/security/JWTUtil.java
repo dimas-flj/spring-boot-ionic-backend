@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import com.learn.cursomc.utils.Util;
@@ -14,13 +13,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
-@PropertySource(value={"classpath:application.properties"})
 public class JWTUtil {
-	@Value("${jwt.secret}")
+	@Value("${jwt.secret:}")
 	private String jwt_secret;
 	
-	@Value("${jwt.expiration}")
-	private Long jwt_expiration;
+	@Value("${jwt.expiration:}")
+	private String jwt_expiration;
 	
 	public String generateToken(String username) throws IOException {
 		System.out.println("jwt_secret = " + jwt_secret);
@@ -28,7 +26,7 @@ public class JWTUtil {
 		return Jwts.
 			builder().
 			setSubject(username).
-			setExpiration(new Date(System.currentTimeMillis() + jwt_expiration)).
+			setExpiration(new Date(System.currentTimeMillis() + Long.getLong(jwt_expiration))).
 			signWith(SignatureAlgorithm.HS512, jwt_secret.getBytes()).
 			compact();
 	}

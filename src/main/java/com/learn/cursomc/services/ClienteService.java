@@ -8,7 +8,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +33,6 @@ import com.learn.cursomc.services.exceptions.ObjectNotFoundException;
 import com.learn.cursomc.utils.Util;
 
 @Service
-@PropertySource(value={"classpath:application.properties"})
 public class ClienteService {
 	@Autowired
 	private BCryptPasswordEncoder pe;
@@ -51,10 +49,10 @@ public class ClienteService {
 	@Autowired
 	private ImageService imageService;
 	
-	@Value("${img.prefix.client.profile}")
+	@Value("${img.prefix.client.profile:}")
 	private String img_prefix_client_profile;
 	
-	@Value("${img.profile.size}")
+	@Value("${img.profile.size:}")
 	private String img_profile_size;
 	
 	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {
