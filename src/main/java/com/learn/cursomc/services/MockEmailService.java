@@ -1,5 +1,7 @@
 package com.learn.cursomc.services;
 
+import java.io.IOException;
+
 import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
@@ -9,6 +11,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MockEmailService extends AbstractEmailService {
+	public MockEmailService() throws IOException {
+		super();
+	}
+
 	private static final Logger LOG = LoggerFactory.getLogger(MockEmailService.class);
 	
 	public void sendEmail(SimpleMailMessage msg) {

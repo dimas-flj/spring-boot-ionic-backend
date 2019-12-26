@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.learn.cursomc.CursomcApplication;
 import com.learn.cursomc.config.GlobalProperties;
 import com.learn.cursomc.domain.Cidade;
 import com.learn.cursomc.domain.Cliente;
@@ -48,6 +49,10 @@ public class ClienteService {
 	
 	@Autowired
 	private ImageService imageService;
+	
+	public ClienteService() throws IOException {
+		GlobalProperties.init(CursomcApplication.ACTIVE_PROFILE);
+	}
 	
 	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {
 		UserSS user = UserService.authenticated();

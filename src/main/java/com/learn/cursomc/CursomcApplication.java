@@ -13,6 +13,8 @@ import com.learn.cursomc.config.GlobalProperties;
 
 @SpringBootApplication
 public class CursomcApplication implements CommandLineRunner {
+	public static final String ACTIVE_PROFILE = "prod";
+	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
 	}
@@ -20,13 +22,8 @@ public class CursomcApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {}
 	
 	@PostConstruct
-	public void init() {
+	public void init() throws IOException {
 		TimeZone.setDefault(TimeZone.getTimeZone("GMT-3"));
-		try {
-			GlobalProperties.init();
-		}
-		catch(IOException e) {
-			e.printStackTrace();
-		}
+		GlobalProperties.init(ACTIVE_PROFILE);
 	}
 }

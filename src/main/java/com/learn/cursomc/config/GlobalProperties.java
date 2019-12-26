@@ -2,6 +2,7 @@ package com.learn.cursomc.config;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -14,14 +15,61 @@ public class GlobalProperties {
 	private static final Logger log = LoggerFactory.getLogger(GlobalProperties.class);
 	private static Properties prop;
 	
-	public static void init() throws IOException {
+	public static void init(String activeProfile) throws IOException {
 		if (Util.isNull(prop)) {
 			prop = new Properties();
-			InputStream resourceAsStream = GlobalProperties.class.getClassLoader().getResourceAsStream("application.properties");
+			
+			setActiveProfile(activeProfile);
+			
+			URL urlProp = GlobalProperties.class.getClassLoader().getResource("application-prod.properties");
+			if (Util.isNull(urlProp)) {
+				throw new IOException("Nao achou arquivo de propriedades.");
+			}
+			
+			InputStream resourceAsStream = GlobalProperties.class.getClassLoader().getResourceAsStream("application-prod.properties");
+			if (Util.isNull(resourceAsStream)) {
+				throw new IOException("Nao achou arquivo de propriedades.");
+			}
+			
 			prop.load(resourceAsStream);
 			if (prop.isEmpty()) {
 				throw new IOException("Nao achou arquivo de propriedades.");
 			}
+		}
+	}
+	
+	private static void setActiveProfile(String prof) throws IOException {
+		URL urlProp = null;
+		String profile_file = "";
+		if (prof.equals("test")) {
+			urlProp = GlobalProperties.class.getClassLoader().getResource("application-test.properties");
+			profile_file = "application-test.properties";
+		}
+		else if (prof.equals("dev")) {
+			urlProp = GlobalProperties.class.getClassLoader().getResource("application-dev.properties");
+			profile_file = "application-dev.properties";
+		}
+		else if (prof.equals("prod")) {
+			urlProp = GlobalProperties.class.getClassLoader().getResource("application-prod.properties");
+			profile_file = "application-prod.properties";
+		}
+		else {
+			throw new IOException("Nao achou arquivo \"" + prof + "\" de propriedades.");
+		}
+		
+		if (Util.isNull(urlProp)) {
+			throw new IOException("Nao achou arquivo \"" + prof + "\" de propriedades.");
+		}
+		log.info("URL Profile = " + urlProp.toString());
+		
+		InputStream resourceAsStream = GlobalProperties.class.getClassLoader().getResourceAsStream(profile_file);
+		if (Util.isNull(resourceAsStream)) {
+			throw new IOException("Nao achou arquivo \"" + prof + "\" de propriedades.");
+		}
+		
+		prop.load(resourceAsStream);
+		if (prop.isEmpty()) {
+			throw new IOException("Nao achou arquivo \"" + prof + "\" de propriedades.");
 		}
 	}
 	

@@ -1,5 +1,6 @@
 package com.learn.cursomc.config;
 
+import java.io.IOException;
 import java.text.ParseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class DevConfig {
 	}
 	
 	@Bean
-	public EmailService emailService() {
+	public EmailService emailService() throws IOException {
 		return new SmtpEmailService();
 	}
 }

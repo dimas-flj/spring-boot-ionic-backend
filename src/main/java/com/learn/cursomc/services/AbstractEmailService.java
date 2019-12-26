@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import com.learn.cursomc.CursomcApplication;
 import com.learn.cursomc.config.GlobalProperties;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Pedido;
@@ -25,6 +26,10 @@ public abstract class AbstractEmailService implements EmailService {
 	
 	@Autowired
 	private JavaMailSender javaMailSender;
+	
+	public AbstractEmailService() throws IOException {
+		GlobalProperties.init(CursomcApplication.ACTIVE_PROFILE);
+	}
 	
 	public void sendEmailTeste() {
 		SimpleMailMessage sm = new SimpleMailMessage();
