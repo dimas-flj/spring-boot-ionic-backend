@@ -14,27 +14,20 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTUtil {
-	@Value("${app_jwt_secret}")
-	private String app_jwt_secret;
-	@Value("${app_jwt_expiration}")
-	private String app_jwt_expiration;
+	@Value("${jwt.secret}")
+	private String jwt_secret;
 	
-//	public JWTUtil() {
-//		super();
-//		System.out.println("app_jwt_secret = " + app_jwt_secret);
-//		System.out.println("app_jwt_expiration = " + app_jwt_expiration);
-////		app_jwt_secret = ConfigProperties.getInstance().getValue(app_jwt_secret, "app_jwt_secret");
-////		app_jwt_expiration = ConfigProperties.getInstance().getValue(app_jwt_expiration, "app_jwt_expiration");
-//	}
+	@Value("${jwt.expiration}")
+	private String jwt_expiration;
 	
 	public String generateToken(String username) throws IOException {
-		System.out.println("app_jwt_secret = " + app_jwt_secret);
-		System.out.println("app_jwt_expiration = " + app_jwt_expiration);
+		System.out.println("jwt_secret = " + jwt_secret);
+		System.out.println("jwt_expiration = " + jwt_expiration);
 		return Jwts.
 			builder().
 			setSubject(username).
-			setExpiration(new Date(System.currentTimeMillis() + Long.valueOf(app_jwt_expiration))).
-			signWith(SignatureAlgorithm.HS512, app_jwt_secret.getBytes()).
+			setExpiration(new Date(System.currentTimeMillis() + Long.valueOf(jwt_expiration))).
+			signWith(SignatureAlgorithm.HS512, jwt_secret.getBytes()).
 			compact();
 	}
 	
@@ -53,8 +46,10 @@ public class JWTUtil {
 	}
 	
 	private Claims getClaims(String token) throws IOException {
+		System.out.println("jwt_secret = " + jwt_secret);
+		System.out.println("jwt_expiration = " + jwt_expiration);
 		try {
-			return Jwts.parser().setSigningKey(app_jwt_secret.getBytes()).parseClaimsJws(token).getBody();
+			return Jwts.parser().setSigningKey(jwt_secret.getBytes()).parseClaimsJws(token).getBody();
 		}
 		catch(Exception e) {
 			return null;

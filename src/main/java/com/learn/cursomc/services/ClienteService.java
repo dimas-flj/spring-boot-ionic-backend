@@ -49,19 +49,11 @@ public class ClienteService {
 	@Autowired
 	private ImageService imageService;
 	
-	@Value("${app_img_prefix_client_profile}")
-	private String app_img_prefix_client_profile;
-	@Value("${app_img_profile_size}")
-	private String app_img_profile_size;
+	@Value("${img.prefix.client.profile}")
+	private String img_prefix_client_profile;
 	
-//	public ClienteService() {
-//		super();
-//		
-//		System.out.println("app_img_prefix_client_profile = " + app_img_prefix_client_profile);
-//		System.out.println("app_img_profile_size = " + app_img_profile_size);
-////		app_img_prefix_client_profile = ConfigProperties.getInstance().getValue(app_img_prefix_client_profile, "app_img_prefix_client_profile");
-////		app_img_profile_size = ConfigProperties.getInstance().getValue(app_img_profile_size, "app_img_profile_size");
-//	}
+	@Value("${img.profile.size}")
+	private String img_profile_size;
 	
 	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {
 		UserSS user = UserService.authenticated();
@@ -149,8 +141,8 @@ public class ClienteService {
 	}
 	
 	public URI uploadProfilePicture(MultipartFile multipartFile) throws IOException {
-		System.out.println("app_img_prefix_client_profile = " + app_img_prefix_client_profile);
-		System.out.println("app_img_profile_size = " + app_img_profile_size);
+		System.out.println("img_prefix_client_profile = " + img_prefix_client_profile);
+		System.out.println("img_profile_size = " + img_profile_size);
 		UserSS user = UserService.authenticated();
 		if (Util.isNull(user)) {
 			throw new AuthorizationException("Acesso negado.");
@@ -158,9 +150,9 @@ public class ClienteService {
 		
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
 		jpgImage = imageService.cropSquare(jpgImage);
-		jpgImage = imageService.resize(jpgImage, Integer.parseInt(app_img_profile_size));
+		jpgImage = imageService.resize(jpgImage, Integer.parseInt(img_profile_size));
 		
-		String fileName = app_img_prefix_client_profile + user.getId() + ".jpg";
+		String fileName = img_prefix_client_profile + user.getId() + ".jpg";
 		
 		return s3Service.uploadFile(imageService.getImageInputStream(jpgImage, "jpg"), fileName, "image");
 	}

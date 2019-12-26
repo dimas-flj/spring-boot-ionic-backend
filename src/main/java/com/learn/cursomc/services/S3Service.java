@@ -27,23 +27,17 @@ public class S3Service {
 	@Autowired
 	private AmazonS3 s3Client;
 	
-	@Value("${app_s3_bucket}")
-	private String app_s3_bucket;
-	
-//	public S3Service() {
-//		super();
-//		System.out.println("app_s3_bucket = " + app_s3_bucket);
-////		app_s3_bucket = ConfigProperties.getInstance().getValue(app_s3_bucket, "app_s3_bucket");
-//	}
+	@Value("${s3.bucket}")
+	private String s3_bucket;
 	
 	// Método de Teste de upload sem endpoint
 	public void uploadFile(String localFilePath) throws IOException {
 		try {
-			System.out.println("app_s3_bucket = " + app_s3_bucket);
+			System.out.println("s3_bucket = " + s3_bucket);
 			
 			File file = new File(localFilePath);
 			LOG.info("Iniciando upload.");
-			s3Client.putObject(new PutObjectRequest(app_s3_bucket, "capturar.jpg", file));
+			s3Client.putObject(new PutObjectRequest(s3_bucket, "capturar.jpg", file));
 			LOG.info("Upload finalizado.");
 		}
 		catch(AmazonServiceException e) {
@@ -70,15 +64,16 @@ public class S3Service {
 	}
 	
 	public URI uploadFile(InputStream is, String fileName, String contentType) throws IOException {
+		System.out.println("s3_bucket = " + s3_bucket);
 		try {
 			ObjectMetadata meta = new ObjectMetadata();
 			meta.setContentType(contentType);
 			
 			LOG.info("Iniciando upload.");
-			s3Client.putObject(app_s3_bucket, fileName, is, meta);
+			s3Client.putObject(s3_bucket, fileName, is, meta);
 			LOG.info("Upload finalizado.");
 			
-			return s3Client.getUrl(app_s3_bucket, fileName).toURI();
+			return s3Client.getUrl(s3_bucket, fileName).toURI();
 		}
 		catch(URISyntaxException e) {
 			throw new FileException("Erro ao converter URL pata URI.");

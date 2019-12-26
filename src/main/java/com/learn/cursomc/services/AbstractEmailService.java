@@ -26,25 +26,17 @@ public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	@Value("${app_mail_sender}")
-	private String app_mail_sender;
-	@Value("${app_mail_recipient}")
-	private String app_mail_recipient;
+	@Value("${default.sender}")
+	private String mail_sender;
 	
-//	public AbstractEmailService() {
-//		super();
-//		
-//		System.out.println("app_mail_sender = " + app_mail_sender);
-//		System.out.println("app_mail_recipient = " + app_mail_recipient);
-////		app_mail_sender = ConfigProperties.getInstance().getValue(app_mail_sender, "app_mail_sender");
-////		app_mail_recipient = ConfigProperties.getInstance().getValue(app_mail_recipient, "app_mail_recipient");
-//	}
+	@Value("${default.recipient}")
+	private String mail_recipient;
 	
 	public void sendEmailTeste() {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
-		sm.setTo(app_mail_recipient);
-		sm.setFrom(app_mail_sender);
+		sm.setTo(mail_recipient);
+		sm.setFrom(mail_sender);
 		sm.setSubject("Teste de envio de email via endpoint");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText("Envio de email somente a titulo de teste.");
@@ -58,13 +50,12 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	protected SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido obj) throws IOException {
-		
-		System.out.println("app_mail_sender = " + app_mail_sender);
-		System.out.println("app_mail_recipient = " + app_mail_recipient);
+		System.out.println("mail_sender = " + mail_sender);
+		System.out.println("mail_recipient = " + mail_recipient);
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
 		sm.setTo(obj.getCliente().getEmail());
-		sm.setFrom(app_mail_sender);
+		sm.setFrom(mail_sender);
 		sm.setSubject("Pedido confirmado: Código(" + obj.getId() + ")");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText(obj.toString());
@@ -92,14 +83,14 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	protected MimeMessage prepareMimeMessageFromPedido(Pedido obj) throws MessagingException, IOException {
+		System.out.println("mail_sender = " + mail_sender);
+		System.out.println("mail_recipient = " + mail_recipient);
 		
-		System.out.println("app_mail_sender = " + app_mail_sender);
-		System.out.println("app_mail_recipient = " + app_mail_recipient);
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
 		
 		mmh.setTo(obj.getCliente().getEmail());
-		mmh.setFrom(app_mail_sender);
+		mmh.setFrom(mail_sender);
 		mmh.setSubject("Pedido confirmado: Código(" + obj.getId() + ")");
 		mmh.setSentDate(new Date(System.currentTimeMillis()));
 		mmh.setText(htmlFromTemplatePedido(obj), true);
@@ -113,9 +104,12 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass) throws IOException {
+		System.out.println("mail_sender = " + mail_sender);
+		System.out.println("mail_recipient = " + mail_recipient);
+		
 		SimpleMailMessage sm = new SimpleMailMessage();
 		sm.setTo(cliente.getEmail());
-		sm.setFrom(app_mail_sender);
+		sm.setFrom(mail_sender);
 		sm.setSubject("Solicitação de nova senha.");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText("Nova senha: " + newPass);
