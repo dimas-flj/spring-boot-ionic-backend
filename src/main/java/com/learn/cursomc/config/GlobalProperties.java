@@ -79,4 +79,31 @@ public class GlobalProperties {
 		System.out.println("s3_bucket = \"" + s3_bucket + "\"");
 		return s3_bucket;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("GlobalProperties [getAwsAccessKeyId()=");
+		builder.append(getAwsAccessKeyId());
+		builder.append(", getAwsSecretAccessKey()=");
+		builder.append(getAwsSecretAccessKey());
+		builder.append(", getS3Region()=");
+		builder.append(getS3Region());
+		builder.append(", getJwtSecret()=");
+		builder.append(getJwtSecret());
+		builder.append(", getJwtExpiration()=");
+		builder.append(getJwtExpiration());
+		builder.append(", getMailSender()=");
+		builder.append(getMailSender());
+		builder.append(", getMailRecipient()=");
+		builder.append(getMailRecipient());
+		builder.append(", getImgPrefixClientProfile()=");
+		builder.append(getImgPrefixClientProfile());
+		builder.append(", getImgProfileSize()=");
+		builder.append(getImgProfileSize());
+		builder.append(", getS3Bucket()=");
+		builder.append(getS3Bucket());
+		builder.append("]");
+		return builder.toString();
+	}
 }
