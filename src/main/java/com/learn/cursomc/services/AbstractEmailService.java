@@ -16,7 +16,6 @@ import org.thymeleaf.context.Context;
 
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Pedido;
-import com.learn.cursomc.utils.Constantes;
 
 @Service
 public abstract class AbstractEmailService implements EmailService {
@@ -26,11 +25,14 @@ public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
+	private final String DEFAULT_SENDER = "dimasflj@gmail.com";
+	private final String DEFAULT_RECIPIENT = "dimasflj@gmail.com";
+	
 	public void sendEmailTeste() {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
-		sm.setTo(Constantes.DEFAULT_RECIPIENT);
-		sm.setFrom(Constantes.DEFAULT_SENDER);
+		sm.setTo(DEFAULT_RECIPIENT);
+		sm.setFrom(DEFAULT_SENDER);
 		sm.setSubject("Teste de envio de email via endpoint");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText("Envio de email somente a titulo de teste.");
@@ -47,7 +49,7 @@ public abstract class AbstractEmailService implements EmailService {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
 		sm.setTo(obj.getCliente().getEmail());
-		sm.setFrom(Constantes.DEFAULT_SENDER);
+		sm.setFrom(DEFAULT_SENDER);
 		sm.setSubject("Pedido confirmado: Código(" + obj.getId() + ")");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText(obj.toString());
@@ -79,7 +81,7 @@ public abstract class AbstractEmailService implements EmailService {
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
 		
 		mmh.setTo(obj.getCliente().getEmail());
-		mmh.setFrom(Constantes.DEFAULT_SENDER);
+		mmh.setFrom(DEFAULT_SENDER);
 		mmh.setSubject("Pedido confirmado: Código(" + obj.getId() + ")");
 		mmh.setSentDate(new Date(System.currentTimeMillis()));
 		mmh.setText(htmlFromTemplatePedido(obj), true);
@@ -96,7 +98,7 @@ public abstract class AbstractEmailService implements EmailService {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
 		sm.setTo(cliente.getEmail());
-		sm.setFrom(Constantes.DEFAULT_SENDER);
+		sm.setFrom(DEFAULT_SENDER);
 		sm.setSubject("Solicitação de nova senha.");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText("Nova senha: " + newPass);

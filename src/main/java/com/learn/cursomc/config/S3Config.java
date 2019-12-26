@@ -10,17 +10,20 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.learn.cursomc.utils.Constantes;
 
 @Configuration
 public class S3Config {
+	private final String AWS_ACCESS_KEY_ID = "AKIAZF2LVPEKETAKWLHH";
+	private final String AWS_SECRET_ACCESS_KEY = "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";
+	private final String S3_REGION = "sa-east-1";
+	
 	@Bean
 	public AmazonS3 s3Client() throws IOException {
-		BasicAWSCredentials awsCred = new BasicAWSCredentials(Constantes.AWS_ACCESS_KEY_ID, Constantes.AWS_SECRET_ACCESS_KEY);
+		BasicAWSCredentials awsCred = new BasicAWSCredentials(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY);
 		AmazonS3 s3Client = 
 				AmazonS3ClientBuilder.
 				standard().
-				withRegion(Regions.fromName(Constantes.S3_REGION)).
+				withRegion(Regions.fromName(S3_REGION)).
 				withCredentials(new AWSStaticCredentialsProvider(awsCred)).
 				build();
 		

@@ -29,7 +29,6 @@ import com.learn.cursomc.security.UserSS;
 import com.learn.cursomc.services.exceptions.AuthorizationException;
 import com.learn.cursomc.services.exceptions.DataIntegrityException;
 import com.learn.cursomc.services.exceptions.ObjectNotFoundException;
-import com.learn.cursomc.utils.Constantes;
 import com.learn.cursomc.utils.Util;
 
 @Service
@@ -48,6 +47,9 @@ public class ClienteService {
 	
 	@Autowired
 	private ImageService imageService;
+	
+	private final String IMG_PREFIX_CLIENT_PROFILE = "cp";
+	private final String IMG_PROFILE_SIZE = "200";
 	
 	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {
 		UserSS user = UserService.authenticated();
@@ -142,9 +144,9 @@ public class ClienteService {
 		
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
 		jpgImage = imageService.cropSquare(jpgImage);
-		jpgImage = imageService.resize(jpgImage, Integer.parseInt(Constantes.IMG_PROFILE_SIZE));
+		jpgImage = imageService.resize(jpgImage, Integer.parseInt(IMG_PROFILE_SIZE));
 		
-		String fileName = Constantes.IMG_PREFIX_CLIENT_PROFILE + user.getId() + ".jpg";
+		String fileName = IMG_PREFIX_CLIENT_PROFILE + user.getId() + ".jpg";
 		
 		return s3Service.uploadFile(imageService.getImageInputStream(jpgImage, "jpg"), fileName, "image");
 	}
