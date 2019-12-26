@@ -26,14 +26,11 @@ public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	@Autowired
-	private GlobalProperties prop;
-	
 	public void sendEmailTeste() {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
-		sm.setTo(prop.getMailRecipient());
-		sm.setFrom(prop.getMailSender());
+		sm.setTo(GlobalProperties.getMailRecipient());
+		sm.setFrom(GlobalProperties.getMailSender());
 		sm.setSubject("Teste de envio de email via endpoint");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText("Envio de email somente a titulo de teste.");
@@ -50,7 +47,7 @@ public abstract class AbstractEmailService implements EmailService {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
 		sm.setTo(obj.getCliente().getEmail());
-		sm.setFrom(prop.getMailSender());
+		sm.setFrom(GlobalProperties.getMailSender());
 		sm.setSubject("Pedido confirmado: Código(" + obj.getId() + ")");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText(obj.toString());
@@ -82,7 +79,7 @@ public abstract class AbstractEmailService implements EmailService {
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
 		
 		mmh.setTo(obj.getCliente().getEmail());
-		mmh.setFrom(prop.getMailSender());
+		mmh.setFrom(GlobalProperties.getMailSender());
 		mmh.setSubject("Pedido confirmado: Código(" + obj.getId() + ")");
 		mmh.setSentDate(new Date(System.currentTimeMillis()));
 		mmh.setText(htmlFromTemplatePedido(obj), true);
@@ -99,7 +96,7 @@ public abstract class AbstractEmailService implements EmailService {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
 		sm.setTo(cliente.getEmail());
-		sm.setFrom(prop.getMailSender());
+		sm.setFrom(GlobalProperties.getMailSender());
 		sm.setSubject("Solicitação de nova senha.");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText("Nova senha: " + newPass);

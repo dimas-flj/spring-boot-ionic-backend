@@ -1,34 +1,43 @@
 package com.learn.cursomc.config;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
 
 import com.learn.cursomc.utils.Constantes;
 import com.learn.cursomc.utils.Util;
 
-@Component
 public class GlobalProperties {
 	private static final Logger log = LoggerFactory.getLogger(GlobalProperties.class);
+	private static Properties prop;
 	
-	@Autowired
-	Environment environment;
+	public static void init() throws IOException {
+		if (Util.isNull(prop)) {
+			prop = new Properties();
+			InputStream resourceAsStream = GlobalProperties.class.getClassLoader().getResourceAsStream("application.properties");
+			prop.load(resourceAsStream);
+			if (prop.isEmpty()) {
+				throw new IOException("Nao achou arquivo de propriedades.");
+			}
+		}
+	}
 	
-	private String aws_access_key_id;
-	private String aws_secret_access_key;
-	private String s3_region;
-	private String jwt_secret;
-	private String jwt_expiration;
-	private String mail_sender;
-	private String mail_recipient;
-	private String img_prefix_client_profile;
-	private String img_profile_size;
-	private String s3_bucket;
+	private static String aws_access_key_id;
+	private static String aws_secret_access_key;
+	private static String s3_region;
+	private static String jwt_secret;
+	private static String jwt_expiration;
+	private static String mail_sender;
+	private static String mail_recipient;
+	private static String img_prefix_client_profile;
+	private static String img_profile_size;
+	private static String s3_bucket;
 	
-	public String getAwsAccessKeyId() {
-		aws_access_key_id = environment.getProperty("aws.access_key_id");
+	public static String getAwsAccessKeyId() {
+		aws_access_key_id = prop.getProperty("aws.access_key_id");
 		if (Util.isValidString(aws_access_key_id)) {
 			log.info("[PROP] aws_access_key_id = \"" + aws_access_key_id + "\"");
 		}
@@ -39,8 +48,8 @@ public class GlobalProperties {
 		return aws_access_key_id;
 	}
 	
-	public String getAwsSecretAccessKey() {
-		aws_secret_access_key = environment.getProperty("aws.secret_access_key");
+	public static String getAwsSecretAccessKey() {
+		aws_secret_access_key = prop.getProperty("aws.secret_access_key");
 		if (Util.isValidString(aws_secret_access_key)) {
 			log.info("[PROP] aws_secret_access_key = \"" + aws_secret_access_key + "\"");
 		}
@@ -51,8 +60,8 @@ public class GlobalProperties {
 		return aws_secret_access_key;
 	}
 	
-	public String getS3Region() {
-		s3_region = environment.getProperty("s3.region");
+	public static String getS3Region() {
+		s3_region = prop.getProperty("s3.region");
 		if (Util.isValidString(s3_region)) {
 			log.info("[PROP] s3_region = \"" + s3_region + "\"");
 		}
@@ -63,8 +72,8 @@ public class GlobalProperties {
 		return s3_region;
 	}
 	
-	public String getJwtSecret() {
-		jwt_secret = environment.getProperty("jwt.secret");
+	public static String getJwtSecret() {
+		jwt_secret = prop.getProperty("jwt.secret");
 		if (Util.isValidString(jwt_secret)) {
 			log.info("[PROP] jwt_secret = \"" + jwt_secret + "\"");
 		}
@@ -75,8 +84,8 @@ public class GlobalProperties {
 		return jwt_secret;
 	}
 	
-	public String getJwtExpiration() {
-		jwt_expiration = environment.getProperty("jwt.expiration");
+	public static String getJwtExpiration() {
+		jwt_expiration = prop.getProperty("jwt.expiration");
 		if (Util.isValidString(jwt_expiration)) {
 			log.info("[PROP] jwt_expiration = \"" + jwt_expiration + "\"");
 		}
@@ -87,8 +96,8 @@ public class GlobalProperties {
 		return jwt_expiration;
 	}
 	
-	public String getMailSender() {
-		mail_sender = environment.getProperty("default.sender");
+	public static String getMailSender() {
+		mail_sender = prop.getProperty("default.sender");
 		if (Util.isValidString(mail_sender)) {
 			log.info("[PROP] mail_sender = \"" + mail_sender + "\"");
 		}
@@ -99,8 +108,8 @@ public class GlobalProperties {
 		return mail_sender;
 	}
 	
-	public String getMailRecipient() {
-		mail_recipient = environment.getProperty("default.recipient");
+	public static String getMailRecipient() {
+		mail_recipient = prop.getProperty("default.recipient");
 		if (Util.isValidString(mail_recipient)) {
 			log.info("[PROP] mail_recipient = \"" + mail_recipient + "\"");
 		}
@@ -111,8 +120,8 @@ public class GlobalProperties {
 		return mail_recipient;
 	}
 	
-	public String getImgPrefixClientProfile() {
-		img_prefix_client_profile = environment.getProperty("img.prefix.client.profile");
+	public static String getImgPrefixClientProfile() {
+		img_prefix_client_profile = prop.getProperty("img.prefix.client.profile");
 		if (Util.isValidString(img_prefix_client_profile)) {
 			log.info("[PROP] img_prefix_client_profile = \"" + img_prefix_client_profile + "\"");
 		}
@@ -123,8 +132,8 @@ public class GlobalProperties {
 		return img_prefix_client_profile;
 	}
 	
-	public String getImgProfileSize() {
-		img_profile_size = environment.getProperty("img.profile.size");
+	public static String getImgProfileSize() {
+		img_profile_size = prop.getProperty("img.profile.size");
 		if (Util.isValidString(img_profile_size)) {
 			log.info("[PROP] img_profile_size = \"" + img_profile_size + "\"");
 		}
@@ -135,8 +144,8 @@ public class GlobalProperties {
 		return img_profile_size;
 	}
 	
-	public String getS3Bucket() {
-		s3_bucket = environment.getProperty("s3.bucket");
+	public static String getS3Bucket() {
+		s3_bucket = prop.getProperty("s3.bucket");
 		if (Util.isValidString(s3_bucket)) {
 			log.info("[PROP] s3_bucket = \"" + s3_bucket + "\"");
 		}

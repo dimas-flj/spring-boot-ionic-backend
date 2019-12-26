@@ -3,7 +3,6 @@ package com.learn.cursomc.security;
 import java.io.IOException;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.learn.cursomc.config.GlobalProperties;
@@ -15,15 +14,12 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTUtil {
-	@Autowired
-	private GlobalProperties prop;
-	
 	public String generateToken(String username) throws IOException {
 		return Jwts.
 			builder().
 			setSubject(username).
-			setExpiration(new Date(System.currentTimeMillis() + Long.getLong(prop.getJwtExpiration()))).
-			signWith(SignatureAlgorithm.HS512, prop.getJwtSecret().getBytes()).
+			setExpiration(new Date(System.currentTimeMillis() + Long.getLong(GlobalProperties.getJwtExpiration()))).
+			signWith(SignatureAlgorithm.HS512, GlobalProperties.getJwtSecret().getBytes()).
 			compact();
 	}
 	
@@ -43,7 +39,7 @@ public class JWTUtil {
 	
 	private Claims getClaims(String token) throws IOException {
 		try {
-			return Jwts.parser().setSigningKey(prop.getJwtSecret().getBytes()).parseClaimsJws(token).getBody();
+			return Jwts.parser().setSigningKey(GlobalProperties.getJwtSecret().getBytes()).parseClaimsJws(token).getBody();
 		}
 		catch(Exception e) {
 			return null;

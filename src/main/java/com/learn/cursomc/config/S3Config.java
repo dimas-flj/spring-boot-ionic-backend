@@ -2,7 +2,6 @@ package com.learn.cursomc.config;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,16 +13,13 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @Configuration
 public class S3Config {
-	@Autowired
-	private GlobalProperties prop; 
-	
 	@Bean
 	public AmazonS3 s3Client() throws IOException {
-		BasicAWSCredentials awsCred = new BasicAWSCredentials(prop.getAwsAccessKeyId(), prop.getAwsSecretAccessKey());
+		BasicAWSCredentials awsCred = new BasicAWSCredentials(GlobalProperties.getAwsAccessKeyId(), GlobalProperties.getAwsSecretAccessKey());
 		AmazonS3 s3Client = 
 				AmazonS3ClientBuilder.
 				standard().
-				withRegion(Regions.fromName(prop.getS3Region())).
+				withRegion(Regions.fromName(GlobalProperties.getS3Region())).
 				withCredentials(new AWSStaticCredentialsProvider(awsCred)).
 				build();
 		
