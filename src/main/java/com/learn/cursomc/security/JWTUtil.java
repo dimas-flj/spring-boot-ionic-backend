@@ -3,6 +3,7 @@ package com.learn.cursomc.security;
 import java.io.IOException;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.learn.cursomc.config.GlobalProperties;
@@ -14,7 +15,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTUtil {
-	private static GlobalProperties prop = new GlobalProperties();
+	@Autowired
+	private GlobalProperties prop;
 	
 	public String generateToken(String username) throws IOException {
 		return Jwts.

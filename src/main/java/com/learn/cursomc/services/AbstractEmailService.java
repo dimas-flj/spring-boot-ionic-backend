@@ -26,7 +26,8 @@ public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	private static GlobalProperties prop = new GlobalProperties();
+	@Autowired
+	private GlobalProperties prop;
 	
 	public void sendEmailTeste() {
 		SimpleMailMessage sm = new SimpleMailMessage();

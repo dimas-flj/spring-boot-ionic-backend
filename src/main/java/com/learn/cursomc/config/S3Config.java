@@ -2,6 +2,7 @@ package com.learn.cursomc.config;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,7 +14,8 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @Configuration
 public class S3Config {
-	private static GlobalProperties prop = new GlobalProperties();
+	@Autowired
+	private GlobalProperties prop;
 	
 	@Bean
 	public AmazonS3 s3Client() throws IOException {

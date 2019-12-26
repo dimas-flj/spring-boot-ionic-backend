@@ -27,7 +27,8 @@ public class S3Service {
 	@Autowired
 	private AmazonS3 s3Client;
 	
-	private static GlobalProperties prop = new GlobalProperties();
+	@Autowired
+	private GlobalProperties prop;
 	
 	// Método de Teste de upload sem endpoint
 	public void uploadFile(String localFilePath) throws IOException {

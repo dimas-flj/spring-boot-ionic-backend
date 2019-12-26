@@ -49,7 +49,8 @@ public class ClienteService {
 	@Autowired
 	private ImageService imageService;
 	
-	private static GlobalProperties prop = new GlobalProperties();
+	@Autowired
+	private GlobalProperties prop;
 	
 	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {
 		UserSS user = UserService.authenticated();
