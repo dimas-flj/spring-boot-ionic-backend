@@ -13,12 +13,12 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @Configuration
 public class S3Config {
-	private final String AWS_ACCESS_KEY_ID = "AKIAZF2LVPEKETAKWLHH";
-	private final String AWS_SECRET_ACCESS_KEY = "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";
-	private final String S3_REGION = "sa-east-1";
-	
 	@Bean
 	public AmazonS3 s3Client() throws IOException {
+		String AWS_ACCESS_KEY_ID = "AKIAZF2LVPEKETAKWLHH";
+		String AWS_SECRET_ACCESS_KEY = "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";
+		String S3_REGION = "sa-east-1";
+		
 		BasicAWSCredentials awsCred = new BasicAWSCredentials(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY);
 		AmazonS3 s3Client = 
 				AmazonS3ClientBuilder.

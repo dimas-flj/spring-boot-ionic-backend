@@ -3,6 +3,7 @@ package com.learn.cursomc.security;
 import java.io.IOException;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.learn.cursomc.utils.Util;
@@ -13,15 +14,23 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTUtil {
-	private final String JWT_SECRET = "AssinaturarDoTokenParaAutenticacaoEmProducao";
-	private final String JWT_EXPIRATION = "86400000";
+	@Value("${jwt.secret}")
+	private String jwt_secret;
+	
+	@Value("${jwt.expiration}")
+	private Long jwt_expiration;
 	
 	public String generateToken(String username) throws IOException {
+		
+		System.out.println("USERNAME = " + username);
+		System.out.println("jwt_secret = " + jwt_secret);
+		System.out.println("jwt_expiration = " + jwt_expiration);
+		
 		return Jwts.
 			builder().
 			setSubject(username).
-			setExpiration(new Date(System.currentTimeMillis() + Long.getLong(JWT_EXPIRATION))).
-			signWith(SignatureAlgorithm.HS512, JWT_SECRET.getBytes()).
+			setExpiration(new Date(System.currentTimeMillis() + jwt_expiration)).
+			signWith(SignatureAlgorithm.HS512, jwt_secret.getBytes()).
 			compact();
 	}
 	
@@ -41,7 +50,7 @@ public class JWTUtil {
 	
 	private Claims getClaims(String token) throws IOException {
 		try {
-			return Jwts.parser().setSigningKey(JWT_SECRET.getBytes()).parseClaimsJws(token).getBody();
+			return Jwts.parser().setSigningKey(jwt_secret.getBytes()).parseClaimsJws(token).getBody();
 		}
 		catch(Exception e) {
 			return null;

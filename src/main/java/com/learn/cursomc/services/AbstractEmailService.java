@@ -25,10 +25,10 @@ public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	private final String DEFAULT_SENDER = "dimasflj@gmail.com";
-	private final String DEFAULT_RECIPIENT = "dimasflj@gmail.com";
-	
 	public void sendEmailTeste() {
+		String DEFAULT_SENDER = "dimasflj@gmail.com";
+		String DEFAULT_RECIPIENT = "dimasflj@gmail.com";
+		
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
 		sm.setTo(DEFAULT_RECIPIENT);
@@ -46,6 +46,8 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	protected SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido obj) throws IOException {
+		String DEFAULT_SENDER = "dimasflj@gmail.com";
+		
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
 		sm.setTo(obj.getCliente().getEmail());
@@ -77,6 +79,8 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	protected MimeMessage prepareMimeMessageFromPedido(Pedido obj) throws MessagingException, IOException {
+		String DEFAULT_SENDER = "dimasflj@gmail.com";
+		
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
 		
@@ -95,6 +99,8 @@ public abstract class AbstractEmailService implements EmailService {
 	}
 	
 	protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass) throws IOException {
+		String DEFAULT_SENDER = "dimasflj@gmail.com";
+		
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
 		sm.setTo(cliente.getEmail());

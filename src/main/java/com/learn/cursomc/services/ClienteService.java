@@ -48,9 +48,6 @@ public class ClienteService {
 	@Autowired
 	private ImageService imageService;
 	
-	private final String IMG_PREFIX_CLIENT_PROFILE = "cp";
-	private final String IMG_PROFILE_SIZE = "200";
-	
 	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {
 		UserSS user = UserService.authenticated();
 		if (Util.isNull(user) || (!user.hasRole(Perfil.ADMIN) && !id_busca.equals(user.getId()))) {
@@ -137,6 +134,9 @@ public class ClienteService {
 	}
 	
 	public URI uploadProfilePicture(MultipartFile multipartFile) throws IOException {
+		String IMG_PREFIX_CLIENT_PROFILE = "cp";
+		String IMG_PROFILE_SIZE = "200";
+		
 		UserSS user = UserService.authenticated();
 		if (Util.isNull(user)) {
 			throw new AuthorizationException("Acesso negado.");

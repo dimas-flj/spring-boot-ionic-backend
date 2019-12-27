@@ -25,10 +25,11 @@ public class S3Service {
 	
 	@Autowired
 	private AmazonS3 s3Client;
-	private final String S3_BUCKET = "curso-spring-ionic-dimas";
 	
 	// Método de Teste de upload sem endpoint
 	public void uploadFile(String localFilePath) throws IOException {
+		String S3_BUCKET = "curso-spring-ionic-dimas";
+		
 		try {
 			File file = new File(localFilePath);
 			LOG.info("Iniciando upload.");
@@ -59,6 +60,8 @@ public class S3Service {
 	}
 	
 	public URI uploadFile(InputStream is, String fileName, String contentType) throws IOException {
+		String S3_BUCKET = "curso-spring-ionic-dimas";
+		
 		try {
 			ObjectMetadata meta = new ObjectMetadata();
 			meta.setContentType(contentType);
