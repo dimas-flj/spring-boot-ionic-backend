@@ -1,8 +1,8 @@
 {"properties": [
   {
-    "name": "default.sender",
+    "name": "mail.sender",
     "type": "java.lang.String",
-    "description": "A description for 'default.sender'"
+    "description": "A description for 'mail.sender'"
   },
   {
     "name": "jwt.secret",
@@ -10,9 +10,9 @@
     "description": "A description for 'jwt.secret'"
   },
   {
-    "name": "default.recipient",
+    "name": "mail.recipient",
     "type": "java.lang.String",
-    "description": "A description for 'default.recipient'"
+    "description": "A description for 'mail.recipient'"
   },
   {
     "name": "jwt.expiration",
@@ -20,9 +20,9 @@
     "description": "A description for 'jwt.expiration'"
   },
   {
-    "name": "aws.access_key_id",
+    "name": "aws.access_key",
     "type": "java.lang.String",
-    "description": "A description for 'aws.access_key_id'"
+    "description": "A description for 'aws.access_key'"
   },
   {
     "name": "aws.secret_access_key",

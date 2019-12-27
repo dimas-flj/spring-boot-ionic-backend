@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -47,6 +48,12 @@ public class ClienteService {
 	
 	@Autowired
 	private ImageService imageService;
+	
+	@Value("${img.prefix.client.profile}")
+	private String prefix_profile;
+	
+	@Value("${img.profile.size}")
+	private Integer profile_size;
 	
 	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {
 		UserSS user = UserService.authenticated();
@@ -134,9 +141,6 @@ public class ClienteService {
 	}
 	
 	public URI uploadProfilePicture(MultipartFile multipartFile) throws IOException {
-		String IMG_PREFIX_CLIENT_PROFILE = "cp";
-		String IMG_PROFILE_SIZE = "200";
-		
 		UserSS user = UserService.authenticated();
 		if (Util.isNull(user)) {
 			throw new AuthorizationException("Acesso negado.");
@@ -144,9 +148,9 @@ public class ClienteService {
 		
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
 		jpgImage = imageService.cropSquare(jpgImage);
-		jpgImage = imageService.resize(jpgImage, Integer.parseInt(IMG_PROFILE_SIZE));
+		jpgImage = imageService.resize(jpgImage, profile_size);
 		
-		String fileName = IMG_PREFIX_CLIENT_PROFILE + user.getId() + ".jpg";
+		String fileName = prefix_profile + user.getId() + ".jpg";
 		
 		return s3Service.uploadFile(imageService.getImageInputStream(jpgImage, "jpg"), fileName, "image");
 	}

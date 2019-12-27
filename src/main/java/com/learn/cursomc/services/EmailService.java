@@ -1,7 +1,5 @@
 package com.learn.cursomc.services;
 
-import java.io.IOException;
-
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.mail.SimpleMailMessage;
@@ -13,15 +11,15 @@ import com.learn.cursomc.domain.Pedido;
 @Service
 public interface EmailService {
 	// VERSAO TEXTO PLANO ::::::::::::
-	void sendOrderConfirmationEmail(Pedido obj) throws IOException;
+	void sendOrderConfirmationEmail(Pedido obj);
 	void sendEmail(SimpleMailMessage msg);
 	void sendEmailTeste();
 	// VERSAO TEXTO PLANO ::::::::::::
 	
 	// VERSAO HTML ::::::::::::
-	void sendOrderConfirmationHtmlEmail(Pedido obj) throws IOException;
+	void sendOrderConfirmationHtmlEmail(Pedido obj);
 	void sendHtmlEmail(MimeMessage msg);
 	// VERSAO HTML ::::::::::::
 	
-	void sendNewPasswordEmail(Cliente cliente, String newPass) throws IOException;
+	void sendNewPasswordEmail(Cliente cliente, String newPass);
 }

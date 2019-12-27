@@ -2,6 +2,7 @@ package com.learn.cursomc.config;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,17 +14,22 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @Configuration
 public class S3Config {
+	@Value("${aws.access_key}")
+	private String access_key;
+	
+	@Value("${aws.secret_access_key}")
+	private String secret_access_key;
+	
+	@Value("${s3.region}")
+	private String s3_region;
+	
 	@Bean
 	public AmazonS3 s3Client() throws IOException {
-		String AWS_ACCESS_KEY_ID = "AKIAZF2LVPEKETAKWLHH";
-		String AWS_SECRET_ACCESS_KEY = "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";
-		String S3_REGION = "sa-east-1";
-		
-		BasicAWSCredentials awsCred = new BasicAWSCredentials(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY);
+		BasicAWSCredentials awsCred = new BasicAWSCredentials(access_key, secret_access_key);
 		AmazonS3 s3Client = 
 				AmazonS3ClientBuilder.
 				standard().
-				withRegion(Regions.fromName(S3_REGION)).
+				withRegion(Regions.fromName(s3_region)).
 				withCredentials(new AWSStaticCredentialsProvider(awsCred)).
 				build();
 		
