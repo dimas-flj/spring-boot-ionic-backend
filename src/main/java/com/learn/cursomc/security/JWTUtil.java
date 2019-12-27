@@ -3,7 +3,9 @@ package com.learn.cursomc.security;
 import java.io.IOException;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.learn.cursomc.utils.Util;
@@ -20,17 +22,42 @@ public class JWTUtil {
 	@Value("${jwt.expiration}")
 	private Long jwt_expiration;
 	
+	@Autowired
+	private Environment env;
+	
+	public String getJwtSecret() {
+		if (!Util.isValidString(jwt_secret)) {
+			jwt_secret = env.getProperty("jwt.secret");
+			System.out.println("jwt_secret(Enviroment) = " + jwt_secret);
+		}
+		else {
+			System.out.println("jwt_secret(@Value) = " + jwt_secret);
+		}
+		return jwt_secret;
+	}
+	
+	public Long getJwtExpiration() {
+		if (!Util.isValidString(jwt_expiration)) {
+			jwt_expiration = env.getProperty("jwt.expiration", Long.class);
+			System.out.println("jwt_expiration(Enviroment) = " + jwt_expiration);
+		}
+		else {
+			System.out.println("jwt_expiration(@Value) = " + jwt_expiration);
+		}
+		return jwt_expiration;
+	}
+	
 	public String generateToken(String username) throws IOException {
 		
 		System.out.println("USERNAME = " + username);
-		System.out.println("jwt_secret = " + jwt_secret);
-		System.out.println("jwt_expiration = " + jwt_expiration);
+		System.out.println("jwt_secret = " + getJwtSecret());
+		System.out.println("jwt_expiration = " + getJwtExpiration());
 		
 		return Jwts.
 			builder().
 			setSubject(username).
-			setExpiration(new Date(System.currentTimeMillis() + jwt_expiration)).
-			signWith(SignatureAlgorithm.HS512, jwt_secret.getBytes()).
+			setExpiration(new Date(System.currentTimeMillis() + getJwtExpiration())).
+			signWith(SignatureAlgorithm.HS512, getJwtSecret().getBytes()).
 			compact();
 	}
 	
@@ -50,7 +77,7 @@ public class JWTUtil {
 	
 	private Claims getClaims(String token) throws IOException {
 		try {
-			return Jwts.parser().setSigningKey(jwt_secret.getBytes()).parseClaimsJws(token).getBody();
+			return Jwts.parser().setSigningKey(getJwtSecret().getBytes()).parseClaimsJws(token).getBody();
 		}
 		catch(Exception e) {
 			return null;
