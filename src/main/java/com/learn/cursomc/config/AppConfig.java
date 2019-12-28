@@ -28,7 +28,7 @@ public class AppConfig {
 	}
 	
 	public long getJwtExpiration() {
-		long jwt_expiration = Long.parseLong("");
+		long jwt_expiration = 0L;
 		return jwt_expiration;
 	}
 	
