@@ -1,18 +1,30 @@
 package com.learn.cursomc.utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Constantes {
-	public static final String MAIL_SENDER = "";
-	public static final String MAIL_RECIPIENT = "";
+	public Map<String, Object> propriedades;
 	
-	public static final String JWT_SECRET = "";
-	public static final long JWT_EXPIRATION = -1;
+	public Constantes() {
+		propriedades = new HashMap<String, Object>();
+		populaPropriedades();
+	}
 	
-	public static final String AWS_ACCESS_KEY = "";
-	public static final String AWS_SECRET_ACCESS_KEY = "";
+	private void populaPropriedades() {
+		propriedades.put("mail_sender", "");
+		propriedades.put("mail_recipient", "");
+		propriedades.put("jwt_secret", "");
+		propriedades.put("jwt_expiration", 0);
+		propriedades.put("aws_access_key", "");
+		propriedades.put("aws_secret_access_key", "");
+		propriedades.put("s3_bucket", "");
+		propriedades.put("s3_region", "");
+		propriedades.put("img_prefix_profile", "");
+		propriedades.put("img_profile_size", 0);
+	}
 	
-	public static final String S3_BUCKET = "";
-	public static final String S3_REGION = "";
-	
-	public static final String IMG_PREFIX_PROFILE = "";
-	public static final int IMG_PROFILE_SIZE = -1;
+	public Object getPropriedade(String chave) {
+		return propriedades.get(chave); 
+	}
 }
