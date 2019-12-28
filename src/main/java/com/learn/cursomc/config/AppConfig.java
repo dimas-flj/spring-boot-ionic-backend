@@ -48,6 +48,7 @@ public class AppConfig {
 		private Long expiration;
 		
 		public String getSecret() {
+			System.out.println("jwt_secret = " + secret);
 			return secret;
 		}
 		
@@ -56,6 +57,7 @@ public class AppConfig {
 		}
 		
 		public Long getExpiration() {
+			System.out.println("jwt_expiration = " + expiration);
 			return expiration;
 		}
 		
@@ -69,6 +71,7 @@ public class AppConfig {
 		private String region;
 		
 		public String getBucket() {
+			System.out.println("s3_bucket = " + bucket);
 			return bucket;
 		}
 		
@@ -77,6 +80,7 @@ public class AppConfig {
 		}
 		
 		public String getRegion() {
+			System.out.println("s3_region = " + region);
 			return region;
 		}
 		
@@ -90,6 +94,7 @@ public class AppConfig {
 		private String secretAccessKey;
 		
 		public String getAccessKey() {
+			System.out.println("aws_access_key = " + accessKey);
 			return accessKey;
 		}
 		
@@ -98,6 +103,7 @@ public class AppConfig {
 		}
 		
 		public String getSecretAccessKey() {
+			System.out.println("aws_secret_access_key = " + secretAccessKey);
 			return secretAccessKey;
 		}
 		
@@ -111,6 +117,7 @@ public class AppConfig {
 		private String recipient;
 		
 		public String getSender() {
+			System.out.println("mail_sender = " + sender);
 			return sender;
 		}
 		
@@ -119,6 +126,7 @@ public class AppConfig {
 		}
 		
 		public String getRecipient() {
+			System.out.println("mail_recipient = " + recipient);
 			return recipient;
 		}
 		
@@ -132,6 +140,7 @@ public class AppConfig {
 		private int profileSize;
 		
 		public String getPrefixProfile() {
+			System.out.println("img_prefix_profile = " + prefixProfile);
 			return prefixProfile;
 		}
 		
@@ -140,6 +149,7 @@ public class AppConfig {
 		}
 		
 		public int getProfileSize() {
+			System.out.println("img_profile_size = " + profileSize);
 			return profileSize;
 		}
 		

@@ -19,10 +19,6 @@ public class JWTUtil {
 	private AppConfig prop;
 	
 	public String generateToken(String username) throws IOException {
-		System.out.println("USERNAME = " + username);
-		System.out.println("jwt_secret = " + prop.getJwt().getSecret());
-		System.out.println("jwt_expiration = " + prop.getJwt().getExpiration());
-		
 		return Jwts.
 			builder().
 			setSubject(username).

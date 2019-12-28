@@ -13,7 +13,7 @@ public class EmailTesteService {
 			emailService.sendEmailTeste();
 		}
 		catch(Exception e) {
-			
+			e.printStackTrace();
 		}
 	}
 }
