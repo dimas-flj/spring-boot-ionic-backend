@@ -1,7 +1,5 @@
 package com.learn.cursomc.services;
 
-import java.io.IOException;
-
 import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
@@ -14,10 +12,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SmtpEmailService extends AbstractEmailService {
-	public SmtpEmailService() throws IOException {
-		super();
-	}
-
 	private static final Logger LOG = LoggerFactory.getLogger(SmtpEmailService.class);
 	
 	@Autowired
