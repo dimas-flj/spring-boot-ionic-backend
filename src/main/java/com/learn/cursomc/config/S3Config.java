@@ -15,12 +15,11 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 public class S3Config {
 	@Bean
 	public AmazonS3 s3Client() throws IOException {
-		AppConfig prop = AppConfig.getInstance();
-		BasicAWSCredentials awsCred = new BasicAWSCredentials(prop.getAwsAccessKey(), prop.getAwsSecretAccessKey());
+		BasicAWSCredentials awsCred = new BasicAWSCredentials("AKIAZF2LVPEKETAKWLHH", "tSB40jC6awtPcNqNWKZKAzLkRAyJdHp5ZNi2F/UZ");
 		AmazonS3 s3Client = 
 				AmazonS3ClientBuilder.
 				standard().
-				withRegion(Regions.fromName(prop.getS3Region())).
+				withRegion(Regions.fromName("sa-east-1")).
 				withCredentials(new AWSStaticCredentialsProvider(awsCred)).
 				build();
 		

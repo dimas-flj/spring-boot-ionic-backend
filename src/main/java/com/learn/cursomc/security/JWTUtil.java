@@ -5,7 +5,6 @@ import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
-import com.learn.cursomc.config.AppConfig;
 import com.learn.cursomc.utils.Util;
 
 import io.jsonwebtoken.Claims;
@@ -15,12 +14,11 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JWTUtil {
 	public String generateToken(String username) throws IOException {
-		AppConfig prop = AppConfig.getInstance();
 		return Jwts.
 			builder().
 			setSubject(username).
-			setExpiration(new Date(System.currentTimeMillis() + prop.getJwtExpiration())).
-			signWith(SignatureAlgorithm.HS512, prop.getJwtSecret().getBytes()).
+			setExpiration(new Date(System.currentTimeMillis() + 86400000)).
+			signWith(SignatureAlgorithm.HS512, "AssinaturarDoTokenParaAutenticacaoEmProducao".getBytes()).
 			compact();
 	}
 	
@@ -39,9 +37,8 @@ public class JWTUtil {
 	}
 	
 	private Claims getClaims(String token) throws IOException {
-		AppConfig prop = AppConfig.getInstance();
 		try {
-			return Jwts.parser().setSigningKey(prop.getJwtSecret().getBytes()).parseClaimsJws(token).getBody();
+			return Jwts.parser().setSigningKey("AssinaturarDoTokenParaAutenticacaoEmProducao".getBytes()).parseClaimsJws(token).getBody();
 		}
 		catch(Exception e) {
 			return null;

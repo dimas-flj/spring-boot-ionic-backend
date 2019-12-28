@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import com.learn.cursomc.config.AppConfig;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Pedido;
 
@@ -28,10 +27,9 @@ public abstract class AbstractEmailService implements EmailService {
 	
 	public void sendEmailTeste() {
 		SimpleMailMessage sm = new SimpleMailMessage();
-		AppConfig prop = AppConfig.getInstance();
 		
-		sm.setTo(prop.getMailRecipient());
-		sm.setFrom(prop.getMailSender());
+		sm.setTo("dimasflj@gmail.com");
+		sm.setFrom("dimasflj@gmail.com");
 		sm.setSubject("Teste de envio de email via endpoint");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText("Envio de email somente a titulo de teste.");
@@ -46,10 +44,9 @@ public abstract class AbstractEmailService implements EmailService {
 	
 	protected SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido obj) {
 		SimpleMailMessage sm = new SimpleMailMessage();
-		AppConfig prop = AppConfig.getInstance();
 		
 		sm.setTo(obj.getCliente().getEmail());
-		sm.setFrom(prop.getMailSender());
+		sm.setFrom("dimasflj@gmail.com");
 		sm.setSubject("Pedido confirmado: Código(" + obj.getId() + ")");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText(obj.toString());
@@ -79,10 +76,9 @@ public abstract class AbstractEmailService implements EmailService {
 	protected MimeMessage prepareMimeMessageFromPedido(Pedido obj) throws MessagingException, IOException {
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
-		AppConfig prop = AppConfig.getInstance();
 		
 		mmh.setTo(obj.getCliente().getEmail());
-		mmh.setFrom(prop.getMailSender());
+		mmh.setFrom("dimasflj@gmail.com");
 		mmh.setSubject("Pedido confirmado: Código(" + obj.getId() + ")");
 		mmh.setSentDate(new Date(System.currentTimeMillis()));
 		mmh.setText(htmlFromTemplatePedido(obj), true);
@@ -97,10 +93,9 @@ public abstract class AbstractEmailService implements EmailService {
 	
 	protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass) {
 		SimpleMailMessage sm = new SimpleMailMessage();
-		AppConfig prop = AppConfig.getInstance();
 		
 		sm.setTo(cliente.getEmail());
-		sm.setFrom(prop.getMailSender());
+		sm.setFrom("dimasflj@gmail.com");
 		sm.setSubject("Solicitação de nova senha.");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText("Nova senha: " + newPass);

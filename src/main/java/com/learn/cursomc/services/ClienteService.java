@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.learn.cursomc.config.AppConfig;
 import com.learn.cursomc.domain.Cidade;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Endereco;
@@ -140,12 +139,11 @@ public class ClienteService {
 			throw new AuthorizationException("Acesso negado.");
 		}
 		
-		AppConfig prop = AppConfig.getInstance();
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
 		jpgImage = imageService.cropSquare(jpgImage);
-		jpgImage = imageService.resize(jpgImage, prop.getImgProfileSize());
+		jpgImage = imageService.resize(jpgImage, 200);
 		
-		String fileName = prop.getImgPrefixProfile() + user.getId() + ".jpg";
+		String fileName = "cp" + user.getId() + ".jpg";
 		
 		return s3Service.uploadFile(imageService.getImageInputStream(jpgImage, "jpg"), fileName, "image");
 	}
