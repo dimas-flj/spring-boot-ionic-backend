@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import com.learn.cursomc.config.AppConfig;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Pedido;
-import com.learn.cursomc.utils.Constantes;
 
 @Service
 public abstract class AbstractEmailService implements EmailService {
@@ -26,11 +26,13 @@ public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
+	private AppConfig prop = new AppConfig();
+	
 	public void sendEmailTeste() {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
-		sm.setTo(Constantes.MAIL_RECIPIENT);
-		sm.setFrom(Constantes.MAIL_SENDER);
+		sm.setTo(prop.getMailRecipient());
+		sm.setFrom(prop.getMailSender());
 		sm.setSubject("Teste de envio de email via endpoint");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText("Envio de email somente a titulo de teste.");
@@ -47,7 +49,7 @@ public abstract class AbstractEmailService implements EmailService {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
 		sm.setTo(obj.getCliente().getEmail());
-		sm.setFrom(Constantes.MAIL_SENDER);
+		sm.setFrom(prop.getMailSender());
 		sm.setSubject("Pedido confirmado: Código(" + obj.getId() + ")");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText(obj.toString());
@@ -79,7 +81,7 @@ public abstract class AbstractEmailService implements EmailService {
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
 		
 		mmh.setTo(obj.getCliente().getEmail());
-		mmh.setFrom(Constantes.MAIL_SENDER);
+		mmh.setFrom(prop.getMailSender());
 		mmh.setSubject("Pedido confirmado: Código(" + obj.getId() + ")");
 		mmh.setSentDate(new Date(System.currentTimeMillis()));
 		mmh.setText(htmlFromTemplatePedido(obj), true);
@@ -96,7 +98,7 @@ public abstract class AbstractEmailService implements EmailService {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
 		sm.setTo(cliente.getEmail());
-		sm.setFrom(Constantes.MAIL_SENDER);
+		sm.setFrom(prop.getMailSender());
 		sm.setSubject("Solicitação de nova senha.");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText("Nova senha: " + newPass);

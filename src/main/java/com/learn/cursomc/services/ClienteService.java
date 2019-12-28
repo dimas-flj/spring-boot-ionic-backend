@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.learn.cursomc.config.AppConfig;
 import com.learn.cursomc.domain.Cidade;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Endereco;
@@ -29,7 +30,6 @@ import com.learn.cursomc.security.UserSS;
 import com.learn.cursomc.services.exceptions.AuthorizationException;
 import com.learn.cursomc.services.exceptions.DataIntegrityException;
 import com.learn.cursomc.services.exceptions.ObjectNotFoundException;
-import com.learn.cursomc.utils.Constantes;
 import com.learn.cursomc.utils.Util;
 
 @Service
@@ -48,6 +48,8 @@ public class ClienteService {
 	
 	@Autowired
 	private ImageService imageService;
+	
+	private AppConfig prop = new AppConfig();
 	
 	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {
 		UserSS user = UserService.authenticated();
@@ -142,9 +144,9 @@ public class ClienteService {
 		
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
 		jpgImage = imageService.cropSquare(jpgImage);
-		jpgImage = imageService.resize(jpgImage, Constantes.IMG_PROFILE_SIZE);
+		jpgImage = imageService.resize(jpgImage, prop.getImgProfileSize());
 		
-		String fileName = Constantes.IMG_PREFIX_PROFILE + user.getId() + ".jpg";
+		String fileName = prop.getImgPrefixProfile() + user.getId() + ".jpg";
 		
 		return s3Service.uploadFile(imageService.getImageInputStream(jpgImage, "jpg"), fileName, "image");
 	}
