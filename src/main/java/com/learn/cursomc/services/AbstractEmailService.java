@@ -7,7 +7,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import com.learn.cursomc.config.AppConfig;
 import com.learn.cursomc.domain.Cliente;
 import com.learn.cursomc.domain.Pedido;
 
@@ -26,17 +26,14 @@ public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	@Value("${mail.sender}")
-	private String mail_sender;
-	
-	@Value("${mail.recipient}")
-	private String mail_recipient;
+	@Autowired
+	private AppConfig prop;
 	
 	public void sendEmailTeste() {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
-		sm.setTo(mail_recipient);
-		sm.setFrom(mail_sender);
+		sm.setTo(prop.getMail().getRecipient());
+		sm.setFrom(prop.getMail().getSender());
 		sm.setSubject("Teste de envio de email via endpoint");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText("Envio de email somente a titulo de teste.");
@@ -53,7 +50,7 @@ public abstract class AbstractEmailService implements EmailService {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
 		sm.setTo(obj.getCliente().getEmail());
-		sm.setFrom(mail_sender);
+		sm.setFrom(prop.getMail().getSender());
 		sm.setSubject("Pedido confirmado: Código(" + obj.getId() + ")");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText(obj.toString());
@@ -85,7 +82,7 @@ public abstract class AbstractEmailService implements EmailService {
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
 		
 		mmh.setTo(obj.getCliente().getEmail());
-		mmh.setFrom(mail_sender);
+		mmh.setFrom(prop.getMail().getSender());
 		mmh.setSubject("Pedido confirmado: Código(" + obj.getId() + ")");
 		mmh.setSentDate(new Date(System.currentTimeMillis()));
 		mmh.setText(htmlFromTemplatePedido(obj), true);
@@ -102,7 +99,7 @@ public abstract class AbstractEmailService implements EmailService {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		
 		sm.setTo(cliente.getEmail());
-		sm.setFrom(mail_sender);
+		sm.setFrom(prop.getMail().getSender());
 		sm.setSubject("Solicitação de nova senha.");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText("Nova senha: " + newPass);

@@ -40,13 +40,13 @@
     "description": "A description for 's3.region'"
   },
   {
-    "name": "img.prefix.client.profile",
+    "name": "img.prefix_profile",
     "type": "java.lang.String",
-    "description": "A description for 'img.prefix.client.profile'"
+    "description": "A description for 'img.prefix_profile'"
   },
   {
-    "name": "img.profile.size",
+    "name": "img.profile_size",
     "type": "java.lang.String",
-    "description": "A description for 'img.profile.size'"
+    "description": "A description for 'img.profile_size'"
   }
 ]}
