@@ -26,10 +26,9 @@ public abstract class AbstractEmailService implements EmailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	private AppConfig prop = new AppConfig();
-	
 	public void sendEmailTeste() {
 		SimpleMailMessage sm = new SimpleMailMessage();
+		AppConfig prop = AppConfig.getInstance();
 		
 		sm.setTo(prop.getMailRecipient());
 		sm.setFrom(prop.getMailSender());
@@ -47,6 +46,7 @@ public abstract class AbstractEmailService implements EmailService {
 	
 	protected SimpleMailMessage prepareSimpleMailMessageFromPedido(Pedido obj) {
 		SimpleMailMessage sm = new SimpleMailMessage();
+		AppConfig prop = AppConfig.getInstance();
 		
 		sm.setTo(obj.getCliente().getEmail());
 		sm.setFrom(prop.getMailSender());
@@ -79,6 +79,7 @@ public abstract class AbstractEmailService implements EmailService {
 	protected MimeMessage prepareMimeMessageFromPedido(Pedido obj) throws MessagingException, IOException {
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, true);
+		AppConfig prop = AppConfig.getInstance();
 		
 		mmh.setTo(obj.getCliente().getEmail());
 		mmh.setFrom(prop.getMailSender());
@@ -96,6 +97,7 @@ public abstract class AbstractEmailService implements EmailService {
 	
 	protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass) {
 		SimpleMailMessage sm = new SimpleMailMessage();
+		AppConfig prop = AppConfig.getInstance();
 		
 		sm.setTo(cliente.getEmail());
 		sm.setFrom(prop.getMailSender());

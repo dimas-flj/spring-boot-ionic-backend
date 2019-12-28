@@ -14,9 +14,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTUtil {
-	private AppConfig prop = new AppConfig();
-	
 	public String generateToken(String username) throws IOException {
+		AppConfig prop = AppConfig.getInstance();
 		return Jwts.
 			builder().
 			setSubject(username).
@@ -40,6 +39,7 @@ public class JWTUtil {
 	}
 	
 	private Claims getClaims(String token) throws IOException {
+		AppConfig prop = AppConfig.getInstance();
 		try {
 			return Jwts.parser().setSigningKey(prop.getJwtSecret().getBytes()).parseClaimsJws(token).getBody();
 		}

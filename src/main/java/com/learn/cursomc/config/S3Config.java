@@ -13,10 +13,9 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @Configuration
 public class S3Config {
-	private AppConfig prop = new AppConfig();
-	
 	@Bean
 	public AmazonS3 s3Client() throws IOException {
+		AppConfig prop = AppConfig.getInstance();
 		BasicAWSCredentials awsCred = new BasicAWSCredentials(prop.getAwsAccessKey(), prop.getAwsSecretAccessKey());
 		AmazonS3 s3Client = 
 				AmazonS3ClientBuilder.

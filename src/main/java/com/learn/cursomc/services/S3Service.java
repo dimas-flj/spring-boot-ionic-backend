@@ -27,10 +27,9 @@ public class S3Service {
 	@Autowired
 	private AmazonS3 s3Client;
 	
-	private AppConfig prop = new AppConfig();
-	
 	// Método de Teste de upload sem endpoint
 	public void uploadFile(String localFilePath) throws IOException {
+		AppConfig prop = AppConfig.getInstance();
 		try {
 			File file = new File(localFilePath);
 			LOG.info("Iniciando upload.");
@@ -61,6 +60,7 @@ public class S3Service {
 	}
 	
 	public URI uploadFile(InputStream is, String fileName, String contentType) throws IOException {
+		AppConfig prop = AppConfig.getInstance();
 		try {
 			ObjectMetadata meta = new ObjectMetadata();
 			meta.setContentType(contentType);

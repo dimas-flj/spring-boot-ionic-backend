@@ -1,9 +1,19 @@
 package com.learn.cursomc.config;
 
 import com.learn.cursomc.utils.Constantes;
+import com.learn.cursomc.utils.Util;
 
 public class AppConfig {
-	private Constantes prop = new Constantes();
+	private static Constantes prop;
+	private static AppConfig app;
+	
+	public static AppConfig getInstance() {
+		if (Util.isNull(app)) {
+			app = new AppConfig();
+			prop = new Constantes();
+		}
+		return app;
+	}
 	
 	public String getJwtSecret() {
 		String jwt_secret = (String) prop.getPropriedade("jwt_secret");

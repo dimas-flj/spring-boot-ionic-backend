@@ -49,8 +49,6 @@ public class ClienteService {
 	@Autowired
 	private ImageService imageService;
 	
-	private AppConfig prop = new AppConfig();
-	
 	public Cliente find(Integer id_busca) throws ObjectNotFoundException, AuthorizationException {
 		UserSS user = UserService.authenticated();
 		if (Util.isNull(user) || (!user.hasRole(Perfil.ADMIN) && !id_busca.equals(user.getId()))) {
@@ -142,6 +140,7 @@ public class ClienteService {
 			throw new AuthorizationException("Acesso negado.");
 		}
 		
+		AppConfig prop = AppConfig.getInstance();
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
 		jpgImage = imageService.cropSquare(jpgImage);
 		jpgImage = imageService.resize(jpgImage, prop.getImgProfileSize());
