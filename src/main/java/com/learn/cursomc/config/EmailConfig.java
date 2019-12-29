@@ -125,8 +125,8 @@ app.email.trust=*
 		JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 		
 		if (email.isAuth()) {
-			javaMailSender.setUsername(email.getUserName());
-			javaMailSender.setPassword(email.getPassword());
+			javaMailSender.setUsername("dimasflj@gmail.com");
+			javaMailSender.setPassword("omninet03");
 		}
 		
 		Properties properties = new Properties();
