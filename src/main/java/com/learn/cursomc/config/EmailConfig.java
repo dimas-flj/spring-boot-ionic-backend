@@ -1,9 +1,13 @@
 package com.learn.cursomc.config;
 
+import java.util.Properties;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 @Configuration
 @PropertySource(
@@ -13,15 +17,11 @@ import org.springframework.context.annotation.PropertySource;
 	}
 )
 @ConfigurationProperties(prefix = "app")
-public class AppConfig {
-	@Bean
-	public Jwt getJwt() {
-		return new Jwt();
-	}
+public class EmailConfig {
+	private Email email = new Email();
 	
-	@Bean
 	public Email getEmail() {
-		return new Email();
+		return email;
 	}
 	
 	public class Email {
@@ -42,6 +42,7 @@ public class AppConfig {
 		public void setProtocol(String protocol) {
 			this.protocol = protocol;
 		}
+		
 		public String getHost() {
 			return host;
 		}
@@ -106,25 +107,27 @@ public class AppConfig {
 			this.trust = trust;
 		}
 	}
-	
-	public class Jwt {
-		private String secret;
-		private Long expiration;
+    
+	@Bean
+	public JavaMailSender javaMailService() {
+		JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 		
-		public String getSecret() {
-			return secret;
+		if (email.isAuth()) {
+			javaMailSender.setUsername(email.getUserName());
+			javaMailSender.setPassword(email.getPassword());
 		}
 		
-		public void setSecret(String secret) {
-			this.secret = secret;
-		}
+		Properties properties = new Properties();
+		properties.setProperty("mail.transport.protocol", email.getProtocol());
 		
-		public Long getExpiration() {
-			return expiration;
-		}
+		properties.setProperty("mail.smtp.auth", Boolean.toString(email.isAuth()));
+		properties.setProperty("mail.smtp.starttls.enable", Boolean.toString(email.isStarttlsEnable()));
+		properties.setProperty("mail.debug", Boolean.toString(email.isDebug()));
+		properties.setProperty("mail.smtp.host", email.getHost());
+		properties.setProperty("mail.smtp.port", Integer.toString(email.getPort()));
+		properties.setProperty("mail.smtp.ssl.trust", email.getTrust());
+		javaMailSender.setJavaMailProperties(properties);
 		
-		public void setExpiration(Long expiration) {
-			this.expiration = expiration;
-		}
+		return javaMailSender;
 	}
 }

@@ -9,7 +9,7 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
-import com.learn.cursomc.config.MailConfig;
+import com.learn.cursomc.config.EmailConfig;
 
 @Service
 public class SmtpEmailService extends AbstractEmailService {
@@ -19,7 +19,7 @@ public class SmtpEmailService extends AbstractEmailService {
 	private MailSender mailSender;
 	
 	@Autowired
-	private MailConfig mailConfig;
+	private EmailConfig mailConfig;
 	
 	public void sendEmail(SimpleMailMessage msg) {
 		LOG.info("Enviando email ...");
