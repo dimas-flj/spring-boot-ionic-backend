@@ -35,9 +35,9 @@
     "description": "A description for 'app.email.auth'"
   },
   {
-    "name": "app.email.starttls.enable",
+    "name": "app.email.starttls-enable",
     "type": "java.lang.String",
-    "description": "A description for 'app.email.starttls.enable'"
+    "description": "A description for 'app.email.starttls-enable'"
   },
   {
     "name": "app.email.trust",

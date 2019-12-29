@@ -2,12 +2,14 @@ package com.learn.cursomc.config;
 
 import java.util.Properties;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+
+import com.learn.cursomc.config.AppConfig.Email;
 
 @Configuration
 @PropertySource(
@@ -17,6 +19,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 	}
 )
 public class MailConfig {
+	/*
     @Value("${app.email.protocol}")
     private String protocol;
 
@@ -43,25 +46,30 @@ public class MailConfig {
 
     @Value("${app.email.trust}")
     private String trust;
+    */
 	
+    @Autowired
+    private AppConfig prop;
+    
 	@Bean
 	public JavaMailSender javaMailService() {
 		JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+		Email email = prop.getEmail();
 		
-		if (this.auth) {
-			javaMailSender.setUsername(this.username);
-			javaMailSender.setPassword(this.password);
+		if (email.isAuth()) {
+			javaMailSender.setUsername(email.getUserName());
+			javaMailSender.setPassword(email.getPassword());
 		}
 		
 		Properties properties = new Properties();
-		properties.setProperty("mail.transport.protocol", this.protocol);
+		properties.setProperty("mail.transport.protocol", email.getProtocol());
 		
-		properties.setProperty("mail.smtp.auth", Boolean.toString(this.auth));
-		properties.setProperty("mail.smtp.starttls.enable", Boolean.toString(this.starttls));
-		properties.setProperty("mail.debug", Boolean.toString(this.debug));
-		properties.setProperty("mail.smtp.host", this.host);
-		properties.setProperty("mail.smtp.port", Integer.toString(this.port));
-		properties.setProperty("mail.smtp.ssl.trust", this.trust);
+		properties.setProperty("mail.smtp.auth", Boolean.toString(email.isAuth()));
+		properties.setProperty("mail.smtp.starttls.enable", Boolean.toString(email.isStarttlsEnable()));
+		properties.setProperty("mail.debug", Boolean.toString(email.isDebug()));
+		properties.setProperty("mail.smtp.host", email.getHost());
+		properties.setProperty("mail.smtp.port", Integer.toString(email.getPort()));
+		properties.setProperty("mail.smtp.ssl.trust", email.getTrust());
 		javaMailSender.setJavaMailProperties(properties);
 		
 		return javaMailSender;
