@@ -110,6 +110,18 @@ public class EmailConfig {
     
 	@Bean
 	public JavaMailSender javaMailService() {
+		/*
+app.email.protocol=smtp
+app.email.host=smtp.gmail.com
+app.email.port=587
+app.email.username=dimasflj@gmail.com
+app.email.password=omninet03
+app.email.auth=true
+app.email.starttls-enable=true
+app.email.debug=false
+app.email.trust=*
+		 */
+		
 		JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 		
 		if (email.isAuth()) {
@@ -118,14 +130,14 @@ public class EmailConfig {
 		}
 		
 		Properties properties = new Properties();
-		properties.setProperty("mail.transport.protocol", email.getProtocol());
+		properties.setProperty("mail.transport.protocol", "smtp");
 		
-		properties.setProperty("mail.smtp.auth", Boolean.toString(email.isAuth()));
-		properties.setProperty("mail.smtp.starttls.enable", Boolean.toString(email.isStarttlsEnable()));
-		properties.setProperty("mail.debug", Boolean.toString(email.isDebug()));
-		properties.setProperty("mail.smtp.host", email.getHost());
-		properties.setProperty("mail.smtp.port", Integer.toString(email.getPort()));
-		properties.setProperty("mail.smtp.ssl.trust", email.getTrust());
+		properties.setProperty("mail.smtp.auth", Boolean.toString(true));
+		properties.setProperty("mail.smtp.starttls.enable", Boolean.toString(true));
+		properties.setProperty("mail.debug", Boolean.toString(false));
+		properties.setProperty("mail.smtp.host", "smtp.gmail.com");
+		properties.setProperty("mail.smtp.port", Integer.toString(587));
+		properties.setProperty("mail.smtp.ssl.trust", "*");
 		javaMailSender.setJavaMailProperties(properties);
 		
 		return javaMailSender;
