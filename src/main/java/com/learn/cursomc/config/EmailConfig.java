@@ -2,7 +2,6 @@ package com.learn.cursomc.config;
 
 import java.util.Properties;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -109,12 +108,12 @@ public class EmailConfig {
 		}
 	}
 	
-	@Autowired
-	private AppConfig prop;
-    
 	@Bean
 	public JavaMailSender javaMailService() {
 		JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+		
+		AppConfig prop = AppConfig.getInstance();
+		
 		System.out.println("prop.isAuth() = " + prop.isAuth());
 		if (prop.isAuth()) {
 			System.out.println("prop.getUserName() = " + prop.getUserName());

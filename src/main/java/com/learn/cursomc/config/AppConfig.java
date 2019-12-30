@@ -1,9 +1,10 @@
 package com.learn.cursomc.config;
 
-import org.springframework.stereotype.*;
-import org.springframework.beans.factory.annotation.*;
+import java.io.IOException;
+import java.util.Properties;
 
-@Component
+import com.learn.cursomc.utils.Util;
+
 public class AppConfig {
 	private String protocol;
 	private String host;
@@ -15,26 +16,35 @@ public class AppConfig {
 	private boolean debug;
 	private String trust;
 	
-	public AppConfig(
-		@Value("${app.email.protocol}") String protocol,
-		@Value("${app.email.host}") String host,
-		@Value("${app.email.port}") int port,
-		@Value("${app.email.username}") String username,
-		@Value("${app.email.password}") String password,
-		@Value("${app.email.auth}") boolean auth,
-		@Value("${app.email.starttls-enable}") boolean starttlsEnable,
-		@Value("${app.email.debug}") boolean debug,
-		@Value("${app.email.trust}") String trust
-	) {
-		this.protocol = protocol;
-		this.host = host;
-		this.port = port;
-		this.username = username;
-		this.password = password;
-		this.auth = auth;
-		this.starttlsEnable = starttlsEnable;
-		this.debug = debug;
-		this.trust = trust;
+	private static AppConfig appConfig;
+	private static Properties properties;
+	
+	private AppConfig() {
+		try {
+			properties = new Properties();
+			
+			properties.load(((Class<?>) this.getClass()).getResourceAsStream("app.properties"));
+			
+			this.setProtocol(properties.getProperty("app.email.protocol"));
+			this.setHost(properties.getProperty("app.email.host"));
+			this.setPort(Integer.parseInt(properties.getProperty("app.email.port")));
+			this.setUserName(properties.getProperty("app.email.username"));
+			this.setPassword(properties.getProperty("app.email.password"));
+			this.setAuth(Boolean.parseBoolean(properties.getProperty("app.email.auth")));
+			this.setStarttlsEnable(Boolean.parseBoolean(properties.getProperty("app.email.starttls")));
+			this.setDebug(Boolean.parseBoolean(properties.getProperty("app.email.debug")));
+			this.setTrust(properties.getProperty("app.email.trust"));
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static AppConfig getInstance() {
+		if (Util.isNull(appConfig)) {
+			appConfig = new AppConfig();
+		}
+		return appConfig;
 	}
 	
 	public String getProtocol() {
