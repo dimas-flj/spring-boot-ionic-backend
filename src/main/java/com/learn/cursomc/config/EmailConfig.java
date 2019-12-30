@@ -2,6 +2,7 @@ package com.learn.cursomc.config;
 
 import java.util.Properties;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -107,37 +108,36 @@ public class EmailConfig {
 			this.trust = trust;
 		}
 	}
+	
+	@Autowired
+	private AppConfig prop;
     
 	@Bean
 	public JavaMailSender javaMailService() {
-		/*
-app.email.protocol=smtp
-app.email.host=smtp.gmail.com
-app.email.port=587
-app.email.username=dimasflj@gmail.com
-app.email.password=omninet03
-app.email.auth=true
-app.email.starttls-enable=true
-app.email.debug=false
-app.email.trust=*
-		 */
-		
 		JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-		
-//		if (email.isAuth()) {
-			javaMailSender.setUsername("dimasflj@gmail.com");
-			javaMailSender.setPassword("omninet03");
-//		}
+		System.out.println("prop.isAuth() = " + prop.isAuth());
+		if (prop.isAuth()) {
+			System.out.println("prop.getUserName() = " + prop.getUserName());
+			javaMailSender.setUsername(prop.getUserName());
+			System.out.println("prop.getPassword() = " + prop.getPassword());
+			javaMailSender.setPassword(prop.getPassword());
+		}
 		
 		Properties properties = new Properties();
-		properties.setProperty("mail.transport.protocol", "smtp");
-		
-		properties.setProperty("mail.smtp.auth", Boolean.toString(true));
-		properties.setProperty("mail.smtp.starttls.enable", Boolean.toString(true));
-		properties.setProperty("mail.debug", Boolean.toString(false));
-		properties.setProperty("mail.smtp.host", "smtp.gmail.com");
-		properties.setProperty("mail.smtp.port", Integer.toString(587));
-		properties.setProperty("mail.smtp.ssl.trust", "*");
+		System.out.println("prop.getProtocol() = " + prop.getProtocol());
+		properties.setProperty("mail.transport.protocol", prop.getProtocol());
+		System.out.println("prop.isAuth() = " + prop.isAuth());
+		properties.setProperty("mail.smtp.auth", Boolean.toString(prop.isAuth()));
+		System.out.println("prop.isStarttlsEnable() = " + prop.isStarttlsEnable());
+		properties.setProperty("mail.smtp.starttls.enable", Boolean.toString(prop.isStarttlsEnable()));
+		System.out.println("prop.isDebug() = " + prop.isDebug());
+		properties.setProperty("mail.debug", Boolean.toString(prop.isDebug()));
+		System.out.println("prop.getHost() = " + prop.getHost());
+		properties.setProperty("mail.smtp.host", prop.getHost());
+		System.out.println("prop.getPort() = " + prop.getPort());
+		properties.setProperty("mail.smtp.port", Integer.toString(prop.getPort()));
+		System.out.println("prop.getTrust() = " + prop.getTrust());
+		properties.setProperty("mail.smtp.ssl.trust", prop.getTrust());
 		javaMailSender.setJavaMailProperties(properties);
 		
 		return javaMailSender;
