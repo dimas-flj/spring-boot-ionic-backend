@@ -25,8 +25,8 @@
 				<tr>
 					<th>Produto</th>
 					<th>Quantidade</th>
-					<th>Preço unitário</th>
-					<th>Subtotal</th>
+					<th>Preço unitário (R$)</th>
+					<th>Subtotal (R$)</th>
 				</tr>
 				<tr th:each="item : ${pedido.itens}">
 					<td th:text="${item.produto.nome}">nome</td>

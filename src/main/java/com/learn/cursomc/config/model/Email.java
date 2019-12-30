@@ -1,11 +1,6 @@
-package com.learn.cursomc.config;
+package com.learn.cursomc.config.model;
 
-import java.io.IOException;
-import java.util.Properties;
-
-import com.learn.cursomc.utils.Util;
-
-public class AppConfig {
+public class Email {
 	private String protocol;
 	private String host;
 	private int port;
@@ -15,37 +10,6 @@ public class AppConfig {
 	private boolean starttlsEnable;
 	private boolean debug;
 	private String trust;
-	
-	private static AppConfig appConfig;
-	private static Properties properties;
-	
-	private AppConfig() {
-		try {
-			properties = new Properties();
-			
-			properties.load(((Class<?>) this.getClass()).getResourceAsStream("app.properties"));
-			
-			this.setProtocol(properties.getProperty("app.email.protocol"));
-			this.setHost(properties.getProperty("app.email.host"));
-			this.setPort(Integer.parseInt(properties.getProperty("app.email.port")));
-			this.setUserName(properties.getProperty("app.email.username"));
-			this.setPassword(properties.getProperty("app.email.password"));
-			this.setAuth(Boolean.parseBoolean(properties.getProperty("app.email.auth")));
-			this.setStarttlsEnable(Boolean.parseBoolean(properties.getProperty("app.email.starttls")));
-			this.setDebug(Boolean.parseBoolean(properties.getProperty("app.email.debug")));
-			this.setTrust(properties.getProperty("app.email.trust"));
-		}
-		catch(IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public static AppConfig getInstance() {
-		if (Util.isNull(appConfig)) {
-			appConfig = new AppConfig();
-		}
-		return appConfig;
-	}
 	
 	public String getProtocol() {
 		return protocol;
@@ -117,5 +81,29 @@ public class AppConfig {
 	
 	public void setTrust(String trust) {
 		this.trust = trust;
+	}
+	
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Email [protocol=");
+		builder.append(protocol);
+		builder.append(", host=");
+		builder.append(host);
+		builder.append(", port=");
+		builder.append(port);
+		builder.append(", username=");
+		builder.append(username);
+		builder.append(", password=");
+		builder.append(password);
+		builder.append(", auth=");
+		builder.append(auth);
+		builder.append(", starttlsEnable=");
+		builder.append(starttlsEnable);
+		builder.append(", debug=");
+		builder.append(debug);
+		builder.append(", trust=");
+		builder.append(trust);
+		builder.append("]");
+		return builder.toString();
 	}
 }
