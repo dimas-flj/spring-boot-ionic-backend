@@ -1,36 +1,41 @@
 package com.learn.cursomc.config;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.*;
+import org.springframework.beans.factory.annotation.*;
 
 @Component
 public class AppConfig {
-	@Value("${app.email.protocol}")
 	private String protocol;
-	
-	@Value("${app.email.host}")
 	private String host;
-	
-	@Value("${app.email.port}")
 	private int port;
-	
-	@Value("${app.email.username}")
 	private String username;
-	
-	@Value("${app.email.password}")
 	private String password;
-	
-	@Value("${app.email.auth}")
 	private boolean auth;
-	
-	@Value("${app.email.starttls-enable}")
 	private boolean starttlsEnable;
-	
-	@Value("${app.email.debug}")
 	private boolean debug;
-	
-	@Value("${app.email.trust}")
 	private String trust;
+	
+	public AppConfig(
+		@Value("${app.email.protocol}") String protocol,
+		@Value("${app.email.host}") String host,
+		@Value("${app.email.port}") int port,
+		@Value("${app.email.username}") String username,
+		@Value("${app.email.password}") String password,
+		@Value("${app.email.auth}") boolean auth,
+		@Value("${app.email.starttls-enable}") boolean starttlsEnable,
+		@Value("${app.email.debug}") boolean debug,
+		@Value("${app.email.trust}") String trust
+	) {
+		this.protocol = protocol;
+		this.host = host;
+		this.port = port;
+		this.username = username;
+		this.password = password;
+		this.auth = auth;
+		this.starttlsEnable = starttlsEnable;
+		this.debug = debug;
+		this.trust = trust;
+	}
 	
 	public String getProtocol() {
 		return protocol;
